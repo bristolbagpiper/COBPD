@@ -6,12 +6,12 @@
     <title>City of Bristol Pipes and Drums</title>
     <meta
       name="description"
-      content="City of Bristol Pipes and Drums is a volunteer pipe band performing at civic events, festivals, weddings, memorials and parades across Bristol and the South West."
+      content="City of Bristol Pipes and Drums is a volunteer pipe band based in Bristol, performing at civic ceremonies, festivals, weddings, memorials and parades across the South West."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -19,13 +19,11 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="site-ribbon" aria-hidden="true"></div>
-
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a class="brand" href="#top" id="top" aria-label="City of Bristol Pipes and Drums home">
-          <span class="brand__mark" aria-hidden="true"></span>
-          <span class="brand__text">
+    <header class="site-header" id="top">
+      <div class="container site-header__inner">
+        <a class="brand" href="#top" aria-label="City of Bristol Pipes and Drums home">
+          <span class="brand__crest" aria-hidden="true"></span>
+          <span class="brand__copy">
             <strong>City of Bristol</strong>
             <span>Pipes and Drums</span>
           </span>
@@ -42,239 +40,156 @@
 
         <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
           <a href="#about">About</a>
-          <a href="#bookings">Bookings</a>
-          <a href="#join">Join</a>
+          <a href="#book">Book</a>
           <a href="#events">Events</a>
+          <a href="#join">Join</a>
           <a href="#faq">FAQ</a>
           <a href="#contact">Contact</a>
         </nav>
 
         <a
-          class="button button--quiet"
+          class="button button--header"
           href="https://www.bristolpipeband.org/book-us"
           target="_blank"
           rel="noreferrer"
         >
-          Book the band
+          Book us
         </a>
       </div>
     </header>
 
     <main id="main">
       <section class="hero">
-        <div class="container hero__grid">
-          <div class="hero__copy">
-            <p class="eyebrow">Bristol's own Highland pipe band</p>
-            <h1>Music for civic occasions, community celebrations and private events.</h1>
-            <p class="hero__lede">
-              City of Bristol Pipes and Drums is a self-funded volunteer band with charitable aims,
-              performing across Bristol, the South West and beyond for civic ceremonies, festivals,
-              weddings, memorials and street parades.
-            </p>
+        <img
+          class="hero__image"
+          src="assets/images/home-c.jpg"
+          alt="City of Bristol Pipes and Drums members with bass drum in parade dress"
+        />
+        <div class="hero__overlay"></div>
 
-            <div class="hero__actions">
-              <a
-                class="button"
-                href="https://www.bristolpipeband.org/book-us"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Make a booking enquiry
-              </a>
-              <a class="button button--secondary" href="#join">Join the band</a>
-            </div>
+        <div class="container hero__content">
+          <p class="eyebrow">Bristol's Highland pipe band</p>
+          <h1>Music for civic occasions, public events and private ceremonies.</h1>
+          <p class="hero__lede">
+            City of Bristol Pipes and Drums is a volunteer band with charitable aims, performing
+            across Bristol, the South West and beyond for parades, remembrance events, festivals,
+            weddings, memorials and community celebrations.
+          </p>
 
-            <div class="hero__meta">
-              <div>
-                <span>Founded</span>
-                <strong>1999</strong>
-              </div>
-              <div>
-                <span>Rehearsals</span>
-                <strong>Weekly in central Bristol</strong>
-              </div>
-              <div>
-                <span>Available for</span>
-                <strong>Full band, small ensemble or solo players</strong>
-              </div>
-            </div>
-          </div>
-
-          <aside class="hero__panel" aria-label="Band overview">
-            <div class="hero-card hero-card--large">
-              <p class="hero-card__label">What the band brings</p>
-              <ul class="hero-list">
-                <li>Ceremonial music with a strong public presence</li>
-                <li>Experienced performers supported by committed learners</li>
-                <li>A volunteer-led group rooted in Bristol's community life</li>
-              </ul>
-            </div>
-
-            <div class="hero-panel__row">
-              <div class="hero-card">
-                <p class="hero-card__label">Bookings</p>
-                <p>
-                  Festivals, remembrance services, weddings, anniversaries, funerals and more.
-                </p>
-              </div>
-
-              <div class="hero-card">
-                <p class="hero-card__label">New members</p>
-                <p>Experienced players are welcome, and beginners can work toward joining the line-up.</p>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="section section--light" id="about">
-        <div class="container two-column">
-          <div class="section-heading">
-            <p class="eyebrow">About the band</p>
-            <h2>A Bristol band with a serious approach to performance and a friendly, local core.</h2>
-          </div>
-
-          <div class="section-copy">
-            <p>
-              Established in 1999, City of Bristol Pipes and Drums has become a familiar presence
-              at civic occasions and public events in and around the city. The band performs at
-              major remembrance ceremonies, festivals, carnivals and private occasions while
-              continuing to welcome new players into the fold.
-            </p>
-            <p>
-              Members are unpaid for performances. Booking fees support the practical costs that
-              keep the band going, including instruments, uniforms, maintenance, rehearsal space and
-              travel.
-            </p>
-          </div>
-        </div>
-
-        <div class="container feature-strip">
-          <article class="feature-block">
-            <p class="feature-block__label">Bristol roots</p>
-            <h3>Built from local players and long-standing community connections.</h3>
-          </article>
-          <article class="feature-block">
-            <p class="feature-block__label">Volunteer-led</p>
-            <h3>A charitable, self-funded band rather than a commercial entertainment agency.</h3>
-          </article>
-          <article class="feature-block">
-            <p class="feature-block__label">Performance-ready</p>
-            <h3>Regular rehearsals, a committed playing set and a clear standard for public events.</h3>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="bookings">
-        <div class="container">
-          <div class="section-heading section-heading--compact">
-            <p class="eyebrow">Bookings</p>
-            <h2>For city ceremonies, parades, festivals and personal occasions.</h2>
-          </div>
-
-          <div class="card-grid">
-            <article class="info-card">
-              <p class="info-card__label">Civic and community</p>
-              <h3>Public events with presence.</h3>
-              <p>
-                Ideal for remembrance services, civic ceremonies, public parades, street processions
-                and community celebrations.
-              </p>
-            </article>
-
-            <article class="info-card">
-              <p class="info-card__label">Private occasions</p>
-              <h3>Music with ceremony and atmosphere.</h3>
-              <p>
-                The band can discuss weddings, anniversaries, birthdays, memorials and funerals, as
-                a full band or a smaller tailored line-up.
-              </p>
-            </article>
-
-            <article class="info-card">
-              <p class="info-card__label">Flexible format</p>
-              <h3>From a full street presence to a single piper.</h3>
-              <p>
-                Enquiries can be shaped around the occasion, venue and budget, whether you need a
-                major public appearance or a more intimate performance.
-              </p>
-            </article>
-          </div>
-
-          <div class="cta-bar">
-            <p>Start with the live booking page for the quickest route to the band.</p>
+          <div class="hero__actions">
             <a
               class="button"
               href="https://www.bristolpipeband.org/book-us"
               target="_blank"
               rel="noreferrer"
             >
-              Open booking page
+              Make a booking enquiry
+            </a>
+            <a
+              class="button button--ghost"
+              href="https://www.bristolpipeband.org/join-the-band"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Join the band
             </a>
           </div>
         </div>
       </section>
 
-      <section class="section section--light" id="join">
-        <div class="container join-layout">
-          <div class="join-copy">
-            <p class="eyebrow">Join the band</p>
-            <h2>Experienced pipers and drummers are welcome, and beginners can build toward performance.</h2>
+      <section class="intro-strip">
+        <div class="container intro-strip__grid">
+          <div>
+            <span>Founded</span>
+            <strong>1999</strong>
+          </div>
+          <div>
+            <span>Rehearsals</span>
+            <strong>Weekly in central Bristol</strong>
+          </div>
+          <div>
+            <span>Bookings</span>
+            <strong>Full band, smaller ensemble or individual players</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="container split split--about">
+          <div class="section-copy">
+            <p class="eyebrow">About</p>
+            <h2>A long-standing Bristol band with a strong public presence.</h2>
             <p>
-              The band welcomes players from Bristol and the wider South West. If you already play,
-              you may be able to slot into rehearsals quickly. If you are new to piping or pipe band
-              drumming, the route is longer, but the band can help point you toward tutors and the
-              right next steps.
+              Established in 1999, City of Bristol Pipes and Drums has become a familiar part of
+              civic and community life in the city. The band performs at major remembrance
+              ceremonies, festivals, carnivals and private occasions, while continuing to welcome
+              both experienced players and committed learners.
+            </p>
+            <p>
+              Members are unpaid for performances. Fees from bookings support instruments, uniform,
+              rehearsal space, maintenance and travel, keeping the band active and performance-ready.
             </p>
           </div>
 
-          <div class="process-card">
-            <div class="process-step">
-              <span>1</span>
-              <div>
-                <h3>Get in touch</h3>
-                <p>Use the live joining page to introduce yourself and your experience level.</p>
-              </div>
-            </div>
+          <figure class="photo-block">
+            <img
+              src="assets/images/book-c.jpg"
+              alt="The band marching together through Bristol in full parade dress"
+            />
+          </figure>
+        </div>
+      </section>
 
-            <div class="process-step">
-              <span>2</span>
-              <div>
-                <h3>Rehearse and learn</h3>
-                <p>Regular weekly practice in central Bristol is expected for learners and performers alike.</p>
-              </div>
-            </div>
+      <section class="section section--dark" id="book">
+        <div class="container split split--book">
+          <figure class="portrait-block">
+            <img
+              src="assets/images/book-b.jpg"
+              alt="A drum major from City of Bristol Pipes and Drums leading a parade"
+            />
+          </figure>
 
-            <div class="process-step">
-              <span>3</span>
-              <div>
-                <h3>Work toward the set</h3>
-                <p>New players build competence before joining the regular performing line-up.</p>
-              </div>
-            </div>
+          <div class="section-copy section-copy--light">
+            <p class="eyebrow">Book the band</p>
+            <h2>Available for public ceremonies, parades, festivals and personal occasions.</h2>
+            <p>
+              The band can discuss civic appearances, remembrance services, street processions,
+              weddings, anniversaries, funerals and smaller ceremonial performances.
+            </p>
 
-            <a
-              class="button button--secondary button--full"
-              href="https://www.bristolpipeband.org/join-the-band"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open joining page
-            </a>
+            <ul class="plain-list">
+              <li>Full band for major public events and parades</li>
+              <li>Smaller line-ups for private functions and ceremonies</li>
+              <li>Individual pipers or drummers where appropriate</li>
+            </ul>
+
+            <div class="button-row">
+              <a
+                class="button"
+                href="https://www.bristolpipeband.org/book-us"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open booking page
+              </a>
+              <a class="button button--ghost-light" href="mailto:hello@bristolpipeband.org">
+                Email the band
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="section" id="events">
         <div class="container">
-          <div class="section-heading section-heading--compact">
+          <div class="section-heading">
             <p class="eyebrow">Recent appearances</p>
-            <h2>A mix of major public dates, local traditions and travel beyond Bristol.</h2>
+            <h2>Recent dates listed by the band include:</h2>
           </div>
 
-          <div class="timeline">
-            <article class="timeline-card">
-              <span class="timeline-card__year">2025</span>
+          <div class="events-grid">
+            <article class="year-card">
+              <span>2025</span>
               <ul>
                 <li>Bemmy Winter Lantern Parade</li>
                 <li>Portishead Carnival</li>
@@ -284,8 +199,8 @@
               </ul>
             </article>
 
-            <article class="timeline-card">
-              <span class="timeline-card__year">2024</span>
+            <article class="year-card">
+              <span>2024</span>
               <ul>
                 <li>St Patrick's Day Parade</li>
                 <li>25th anniversary celebration</li>
@@ -295,8 +210,8 @@
               </ul>
             </article>
 
-            <article class="timeline-card">
-              <span class="timeline-card__year">2023</span>
+            <article class="year-card">
+              <span>2023</span>
               <ul>
                 <li>Coronation Eveningsong at Bristol Cathedral</li>
                 <li>Proms in the Meadow, Iron Acton</li>
@@ -309,27 +224,32 @@
         </div>
       </section>
 
-      <section class="section section--light">
-        <div class="container faq-layout">
-          <div class="faq-copy">
-            <p class="eyebrow">Frequently asked questions</p>
-            <h2 id="faq">A few practical answers.</h2>
+      <section class="section section--stone" id="join">
+        <div class="container join-grid">
+          <div class="section-copy">
+            <p class="eyebrow">Join the band</p>
+            <h2>Experienced players are welcome, and beginners can work toward the line-up.</h2>
+            <p>
+              The band welcomes pipers and drummers from Bristol and the wider South West.
+              Experienced players may be able to join rehearsals quickly, while beginners can build
+              toward performance through regular practice, support and tuition.
+            </p>
+            <a
+              class="button"
+              href="https://www.bristolpipeband.org/join-the-band"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open joining page
+            </a>
           </div>
 
-          <div class="faq-list">
+          <div class="faq-panel" id="faq">
             <details class="faq-item">
-              <summary>Can we ask the band to play at our event?</summary>
+              <summary>Can beginners join?</summary>
               <p>
-                Yes. The best first step is the booking page, which helps direct your enquiry to the
-                right person.
-              </p>
-            </details>
-
-            <details class="faq-item">
-              <summary>How much does a booking cost?</summary>
-              <p>
-                Cost depends on the type of event, location, duration and whether you need the full
-                band, a smaller ensemble or an individual player.
+                Yes, but it takes time, regular practice and commitment. The band can help point
+                new players toward the right next steps and tuition.
               </p>
             </details>
 
@@ -339,18 +259,18 @@
             </details>
 
             <details class="faq-item">
-              <summary>Can beginners join?</summary>
+              <summary>Can experienced drummers join straight away?</summary>
               <p>
-                Yes, but progress takes commitment, regular practice and time. The band can help
-                connect enthusiastic learners with tuition and advice.
+                Sometimes, but pipe band technique and repertoire are specific, so some players may
+                need time before taking a regular place in the performing set.
               </p>
             </details>
 
             <details class="faq-item">
-              <summary>Can an experienced drummer join the snare line straight away?</summary>
+              <summary>How should we contact the band?</summary>
               <p>
-                Not always. Pipe band drumming has its own technique and repertoire, so players may
-                need time, tuition and a progression route before taking a regular place.
+                The band's booking and joining pages are the best starting point, with email and
+                social links also available below.
               </p>
             </details>
           </div>
@@ -358,13 +278,13 @@
       </section>
 
       <section class="section contact-section" id="contact">
-        <div class="container contact-panel">
-          <div>
+        <div class="container contact-section__inner">
+          <div class="contact-copy">
             <p class="eyebrow">Contact</p>
-            <h2>Use the live forms for bookings and joining, or email the band directly.</h2>
+            <h2>Bookings, joining enquiries and direct contact.</h2>
           </div>
 
-          <div class="contact-panel__actions">
+          <div class="contact-links">
             <a
               class="button"
               href="https://www.bristolpipeband.org/book-us"
@@ -383,6 +303,22 @@
             </a>
             <a class="button button--secondary" href="mailto:hello@bristolpipeband.org">
               hello@bristolpipeband.org
+            </a>
+            <a
+              class="text-link"
+              href="https://www.facebook.com/bristolpipesanddrums"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Facebook
+            </a>
+            <a
+              class="text-link"
+              href="https://www.instagram.com/bristol_city_pipes_and_drums_/?igsh=NGVhN2U2NjQ0Yg%3D%3D&utm_source=qr"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
             </a>
           </div>
         </div>
