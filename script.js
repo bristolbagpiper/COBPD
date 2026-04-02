@@ -1,10 +1,19 @@
 const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelectorAll(".site-nav a");
-const year = document.querySelector("#year");
+const navLinks = document.querySelectorAll(".site-nav a[data-nav]");
+const page = document.body.dataset.page;
 
-if (year) {
-  year.textContent = new Date().getFullYear();
+document.querySelectorAll("[data-year]").forEach((node) => {
+  node.textContent = new Date().getFullYear();
+});
+
+if (page) {
+  navLinks.forEach((link) => {
+    if (link.dataset.nav === page) {
+      link.classList.add("is-active");
+      link.setAttribute("aria-current", "page");
+    }
+  });
 }
 
 if (header && menuToggle) {
