@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Public+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -22,11 +22,8 @@
     <header class="site-header">
       <div class="container site-header__inner">
         <a class="brand" href="index.html" aria-label="City of Bristol Pipes and Drums home">
-          <span class="brand__crest" aria-hidden="true"></span>
-          <span class="brand__copy">
-            <strong>City of Bristol</strong>
-            <span>Pipes and Drums</span>
-          </span>
+          <span class="brand__name">City of Bristol Pipes and Drums</span>
+          <span class="brand__sub">Volunteer pipe band based in Bristol</span>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
           Menu
@@ -44,11 +41,11 @@
     </header>
 
     <main id="main" class="page-main">
-      <section class="page-intro">
-        <div class="container page-intro__narrow">
-          <p class="page-label">FAQ</p>
+      <section class="page-head">
+        <div class="container page-head__inner">
+          <p class="eyebrow">FAQ</p>
           <h1>Frequently asked questions</h1>
-          <p class="page-lede">
+          <p class="lede">
             A few practical answers about bookings, rehearsals and joining the band.
           </p>
         </div>
@@ -57,15 +54,19 @@
       <section class="page-section">
         <div class="container faq-layout">
           <aside class="faq-note">
-            <h2>Still need help?</h2>
+            <h3>Still need help?</h3>
             <p>
               Use the booking page for event enquiries and the joining page for membership
               questions. General contact details are also available.
             </p>
-            <a class="text-link" href="contact.html">Contact details</a>
+            <div class="footer-links">
+              <a class="text-link" href="book-us.html">Book us</a>
+              <a class="text-link" href="join-the-band.html">Join the band</a>
+              <a class="text-link" href="contact.html">Contact page</a>
+            </div>
           </aside>
 
-          <div class="question-list">
+          <div class="faq-list">
             <details class="faq-item">
               <summary>Can we ask the band to play at our event?</summary>
               <p>
@@ -108,9 +109,27 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container site-footer__inner">
-        <p>City of Bristol Pipes and Drums <span data-year></span></p>
-        <a href="contact.html">Contact</a>
+      <div class="container site-footer__grid">
+        <div>
+          <h2>City of Bristol Pipes and Drums</h2>
+          <p>Volunteer pipe band based in Bristol, performing across the South West.</p>
+        </div>
+
+        <div>
+          <h3>Contact</h3>
+          <div class="footer-list">
+            <a href="contact.html">Contact page</a>
+            <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Links</h3>
+          <div class="footer-list">
+            <a href="book-us.html">Book us</a>
+            <a href="join-the-band.html">Join the band</a>
+          </div>
+        </div>
       </div>
     </footer>
 

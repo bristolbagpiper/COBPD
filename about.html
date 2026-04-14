@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Public+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -22,11 +22,8 @@
     <header class="site-header">
       <div class="container site-header__inner">
         <a class="brand" href="index.html" aria-label="City of Bristol Pipes and Drums home">
-          <span class="brand__crest" aria-hidden="true"></span>
-          <span class="brand__copy">
-            <strong>City of Bristol</strong>
-            <span>Pipes and Drums</span>
-          </span>
+          <span class="brand__name">City of Bristol Pipes and Drums</span>
+          <span class="brand__sub">Volunteer pipe band based in Bristol</span>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
           Menu
@@ -44,63 +41,34 @@
     </header>
 
     <main id="main" class="page-main">
-      <section class="page-intro">
-        <div class="container page-intro__narrow">
-          <p class="page-label">About</p>
+      <section class="page-head">
+        <div class="container page-head__inner">
+          <p class="eyebrow">About</p>
           <h1>About the band</h1>
-          <p class="page-lede">
+          <p class="lede">
             City of Bristol Pipes and Drums is a volunteer band established in 1999 and based in
             Bristol, performing across the South West at civic, community and private events.
           </p>
         </div>
       </section>
 
-      <div class="container">
-        <figure class="banner">
-          <img
-            src="assets/images/book-c.jpg"
-            alt="City of Bristol Pipes and Drums marching in formation"
-          />
-          <figcaption>Band on parade in Bristol city centre.</figcaption>
-        </figure>
-      </div>
-
       <section class="page-section">
-        <div class="container content-columns">
-          <div>
-            <h2>Background</h2>
-            <p>
-              The band grew from local piping activity in Bristol and developed into the city's own
-              Highland pipe band. Since then it has become a regular presence at remembrance
-              ceremonies, public parades, festivals and private occasions.
-            </p>
-            <p>
-              Players come from Bristol and the wider South West, combining an established
-              performing core with newer members working toward public appearances.
-            </p>
-          </div>
+        <div class="container page-layout">
+          <div class="page-content">
+            <section>
+              <h2>Background</h2>
+              <p>
+                The band grew from local piping activity in Bristol and developed into the city's
+                own Highland pipe band. Since then it has become a regular presence at remembrance
+                ceremonies, public parades, festivals and private occasions.
+              </p>
+              <p>
+                Players come from Bristol and the wider South West, combining an established
+                performing core with newer members working toward public appearances.
+              </p>
+            </section>
 
-          <aside class="aside-note">
-            <h3>At a glance</h3>
-            <ul class="plain-list">
-              <li>Established in 1999</li>
-              <li>Volunteer-led and self-funded</li>
-              <li>Weekly rehearsals in central Bristol</li>
-              <li>Public, civic and private performances</li>
-            </ul>
-          </aside>
-        </div>
-      </section>
-
-      <section class="page-section page-section--tone">
-        <div class="container content-columns">
-          <figure class="photo-frame photo-frame--tall">
-            <img src="assets/images/book-b.jpg" alt="" />
-            <figcaption>Members from Bristol and the wider South West.</figcaption>
-          </figure>
-
-          <div class="stacked-copy">
-            <div>
+            <section>
               <h2>How the band works</h2>
               <p>
                 Members are unpaid for performances. Fees from bookings go back into the practical
@@ -109,28 +77,66 @@
               </p>
               <p>
                 The band aims to balance a friendly rehearsal culture with the discipline needed
-                for public performance, especially at civic and remembrance events.
+                for public performance, particularly at civic and remembrance events.
               </p>
-            </div>
+            </section>
 
-            <div>
-              <h3>Today</h3>
+            <section>
+              <h2>Today</h2>
               <p>
                 City of Bristol Pipes and Drums continues to perform throughout the region and to
                 welcome both experienced players and committed beginners looking for a route into
                 pipe band performance.
               </p>
-              <a class="text-link" href="join-the-band.html">Find out about joining</a>
-            </div>
+              <a class="text-link" href="join-the-band.html">Information about joining</a>
+            </section>
           </div>
+
+          <aside class="page-aside">
+            <figure class="aside-photo">
+              <img
+                src="assets/images/book-c.jpg"
+                alt="City of Bristol Pipes and Drums marching in formation"
+              />
+              <figcaption>Band on parade in Bristol city centre.</figcaption>
+            </figure>
+
+            <div class="side-card">
+              <h3>At a glance</h3>
+              <ul class="plain-list">
+                <li>Established in 1999</li>
+                <li>Volunteer-led and self-funded</li>
+                <li>Weekly rehearsals in central Bristol</li>
+                <li>Public, civic and private performances</li>
+              </ul>
+            </div>
+          </aside>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="container site-footer__inner">
-        <p>City of Bristol Pipes and Drums <span data-year></span></p>
-        <a href="contact.html">Contact</a>
+      <div class="container site-footer__grid">
+        <div>
+          <h2>City of Bristol Pipes and Drums</h2>
+          <p>Volunteer pipe band based in Bristol, performing across the South West.</p>
+        </div>
+
+        <div>
+          <h3>Contact</h3>
+          <div class="footer-list">
+            <a href="contact.html">Contact page</a>
+            <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Links</h3>
+          <div class="footer-list">
+            <a href="events.html">Events</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+        </div>
       </div>
     </footer>
 

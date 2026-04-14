@@ -431,6 +431,10 @@ p + p {
   padding: 1.35rem;
 }
 
+.route-card p {
+  color: var(--muted);
+}
+
 .route-card .text-link {
   margin-top: auto;
 }
@@ -455,6 +459,10 @@ p + p {
 .contact-card a {
   color: var(--accent);
   font-weight: 600;
+}
+
+.contact-card .button {
+  color: #fff;
 }
 
 .year-list {
@@ -561,6 +569,11 @@ p + p {
 .footer-list {
   display: grid;
   gap: 0.55rem;
+}
+
+.footer-list a {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 @media (max-width: 980px) {
