@@ -47,7 +47,6 @@
           <a href="join-the-band.html" aria-current="page">Join the band</a>
           <a href="events.html">Events</a>
           <a href="faq.html">FAQ</a>
-          <a href="contact.html">Contact</a>
         </nav>
       </div>
     </header>
@@ -92,73 +91,84 @@
           </div>
 
           <form class="form-card" data-contact-form="joining" novalidate>
-            <div class="form-grid">
-              <label class="field">
-                <span class="field__label">Your name</span>
-                <input class="field__control" type="text" name="name" autocomplete="name" required />
-              </label>
+            <div data-form-content>
+              <div class="form-grid">
+                <label class="field">
+                  <span class="field__label">Your name</span>
+                  <input class="field__control" type="text" name="name" autocomplete="name" required />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Email</span>
-                <input class="field__control" type="email" name="email" autocomplete="email" required />
-              </label>
+                <label class="field">
+                  <span class="field__label">Email</span>
+                  <input class="field__control" type="email" name="email" autocomplete="email" required />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Phone</span>
-                <input class="field__control" type="tel" name="phone" autocomplete="tel" />
-              </label>
+                <label class="field">
+                  <span class="field__label">Phone</span>
+                  <input class="field__control" type="tel" name="phone" autocomplete="tel" />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Interested in</span>
-                <select class="field__control" name="interest" required>
-                  <option value="">Select one</option>
-                  <option>Piping</option>
-                  <option>Drumming</option>
-                  <option>Either</option>
-                </select>
-              </label>
+                <label class="field">
+                  <span class="field__label">Interested in</span>
+                  <select class="field__control" name="interest" required>
+                    <option value="">Select one</option>
+                    <option>Piping</option>
+                    <option>Drumming</option>
+                    <option>Either</option>
+                  </select>
+                </label>
 
-              <label class="field">
-                <span class="field__label">Current level</span>
-                <select class="field__control" name="experience_level" required>
-                  <option value="">Select one</option>
-                  <option>Complete beginner</option>
-                  <option>Some experience</option>
-                  <option>Experienced player</option>
-                </select>
-              </label>
+                <label class="field">
+                  <span class="field__label">Current level</span>
+                  <select class="field__control" name="experience_level" required>
+                    <option value="">Select one</option>
+                    <option>Complete beginner</option>
+                    <option>Some experience</option>
+                    <option>Experienced player</option>
+                  </select>
+                </label>
 
-              <label class="field">
-                <span class="field__label">Age group</span>
-                <select class="field__control" name="age_group">
-                  <option value="">Prefer not to say</option>
-                  <option>Under 18</option>
-                  <option>18 and over</option>
-                </select>
-              </label>
+                <label class="field">
+                  <span class="field__label">Age group</span>
+                  <select class="field__control" name="age_group">
+                    <option value="">Prefer not to say</option>
+                    <option>Under 18</option>
+                    <option>18 and over</option>
+                  </select>
+                </label>
 
-              <label class="field field--full">
-                <span class="field__label">Tell us a bit about yourself</span>
-                <textarea
-                  class="field__control field__control--textarea"
-                  name="message"
-                  rows="6"
-                  required
-                ></textarea>
-              </label>
+                <label class="field field--full">
+                  <span class="field__label">Tell us a bit about yourself</span>
+                  <textarea
+                    class="field__control field__control--textarea"
+                    name="message"
+                    rows="6"
+                    required
+                  ></textarea>
+                </label>
 
-              <label class="field field--hidden" aria-hidden="true">
-                <span class="field__label">Leave this blank</span>
-                <input class="field__control" type="text" name="website" tabindex="-1" autocomplete="off" />
-              </label>
+                <label class="field field--hidden" aria-hidden="true">
+                  <span class="field__label">Leave this blank</span>
+                  <input class="field__control" type="text" name="website" tabindex="-1" autocomplete="off" />
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button class="button button--solid" type="submit">Send joining enquiry</button>
+                <p class="form-note">Or email <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>.</p>
+              </div>
+
+              <p class="form-status" data-form-status aria-live="polite"></p>
             </div>
 
-            <div class="form-actions">
-              <button class="button button--solid" type="submit">Send joining enquiry</button>
-              <p class="form-note">Or email <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>.</p>
+            <div class="form-success" data-form-success hidden>
+              <p class="eyebrow">Thank you</p>
+              <h3>Your joining enquiry has been sent.</h3>
+              <p>We will review your details and get back to you as soon as we can.</p>
+              <button class="button button--ghost-subtle" type="button" data-form-reset>
+                Send another enquiry
+              </button>
             </div>
-
-            <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
         </div>
       </section>

@@ -748,6 +748,21 @@ h2 {
   gap: 0.85rem 1rem;
 }
 
+.form-success {
+  display: grid;
+  gap: 0.95rem;
+  align-content: center;
+  min-height: 100%;
+  padding: clamp(0.25rem, 1vw, 0.5rem) 0;
+}
+
+.form-success h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+  line-height: 0.98;
+}
+
 .form-note,
 .form-status {
   font-size: 0.98rem;

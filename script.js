@@ -86,7 +86,27 @@ const setFormStatus = (form, message, tone = "") => {
   }
 };
 
+const setFormSuccessState = (form, isSuccess) => {
+  const content = form.querySelector("[data-form-content]");
+  const success = form.querySelector("[data-form-success]");
+
+  if (!content || !success) {
+    return;
+  }
+
+  content.hidden = isSuccess;
+  success.hidden = !isSuccess;
+};
+
 contactForms.forEach((form) => {
+  const resetButton = form.querySelector("[data-form-reset]");
+
+  resetButton?.addEventListener("click", () => {
+    form.reset();
+    setFormStatus(form, "");
+    setFormSuccessState(form, false);
+  });
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -101,7 +121,8 @@ contactForms.forEach((form) => {
 
     if (formData.get("website")) {
       form.reset();
-      setFormStatus(form, "Thanks. Your enquiry has been sent.", "is-success");
+      setFormStatus(form, "");
+      setFormSuccessState(form, true);
       return;
     }
 
@@ -132,7 +153,8 @@ contactForms.forEach((form) => {
       });
 
       form.reset();
-      setFormStatus(form, "Thanks. Your enquiry has been sent.", "is-success");
+      setFormStatus(form, "");
+      setFormSuccessState(form, true);
     } catch {
       setFormStatus(
         form,

@@ -47,7 +47,6 @@
           <a href="join-the-band.html">Join the band</a>
           <a href="events.html">Events</a>
           <a href="faq.html">FAQ</a>
-          <a href="contact.html">Contact</a>
         </nav>
       </div>
     </header>
@@ -96,65 +95,76 @@
           </div>
 
           <form class="form-card" data-contact-form="booking" novalidate>
-            <div class="form-grid">
-              <label class="field">
-                <span class="field__label">Your name</span>
-                <input class="field__control" type="text" name="name" autocomplete="name" required />
-              </label>
+            <div data-form-content>
+              <div class="form-grid">
+                <label class="field">
+                  <span class="field__label">Your name</span>
+                  <input class="field__control" type="text" name="name" autocomplete="name" required />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Email</span>
-                <input class="field__control" type="email" name="email" autocomplete="email" required />
-              </label>
+                <label class="field">
+                  <span class="field__label">Email</span>
+                  <input class="field__control" type="email" name="email" autocomplete="email" required />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Phone</span>
-                <input class="field__control" type="tel" name="phone" autocomplete="tel" />
-              </label>
+                <label class="field">
+                  <span class="field__label">Phone</span>
+                  <input class="field__control" type="tel" name="phone" autocomplete="tel" />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Type of booking</span>
-                <select class="field__control" name="booking_type" required>
-                  <option value="">Select one</option>
-                  <option>Full band</option>
-                  <option>Smaller ensemble</option>
-                  <option>Individual piper or drummer</option>
-                  <option>Not sure yet</option>
-                </select>
-              </label>
+                <label class="field">
+                  <span class="field__label">Type of booking</span>
+                  <select class="field__control" name="booking_type" required>
+                    <option value="">Select one</option>
+                    <option>Full band</option>
+                    <option>Smaller ensemble</option>
+                    <option>Individual piper or drummer</option>
+                    <option>Not sure yet</option>
+                  </select>
+                </label>
 
-              <label class="field">
-                <span class="field__label">Event date</span>
-                <input class="field__control" type="date" name="event_date" />
-              </label>
+                <label class="field">
+                  <span class="field__label">Event date</span>
+                  <input class="field__control" type="date" name="event_date" />
+                </label>
 
-              <label class="field">
-                <span class="field__label">Location</span>
-                <input class="field__control" type="text" name="location" autocomplete="address-level2" />
-              </label>
+                <label class="field">
+                  <span class="field__label">Location</span>
+                  <input class="field__control" type="text" name="location" autocomplete="address-level2" />
+                </label>
 
-              <label class="field field--full">
-                <span class="field__label">Event details</span>
-                <textarea
-                  class="field__control field__control--textarea"
-                  name="message"
-                  rows="6"
-                  required
-                ></textarea>
-              </label>
+                <label class="field field--full">
+                  <span class="field__label">Event details</span>
+                  <textarea
+                    class="field__control field__control--textarea"
+                    name="message"
+                    rows="6"
+                    required
+                  ></textarea>
+                </label>
 
-              <label class="field field--hidden" aria-hidden="true">
-                <span class="field__label">Leave this blank</span>
-                <input class="field__control" type="text" name="website" tabindex="-1" autocomplete="off" />
-              </label>
+                <label class="field field--hidden" aria-hidden="true">
+                  <span class="field__label">Leave this blank</span>
+                  <input class="field__control" type="text" name="website" tabindex="-1" autocomplete="off" />
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button class="button button--solid" type="submit">Send booking enquiry</button>
+                <p class="form-note">Or email <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>.</p>
+              </div>
+
+              <p class="form-status" data-form-status aria-live="polite"></p>
             </div>
 
-            <div class="form-actions">
-              <button class="button button--solid" type="submit">Send booking enquiry</button>
-              <p class="form-note">Or email <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>.</p>
+            <div class="form-success" data-form-success hidden>
+              <p class="eyebrow">Thank you</p>
+              <h3>Your booking enquiry has been sent.</h3>
+              <p>We will review the details and get back to you as soon as we can.</p>
+              <button class="button button--ghost-subtle" type="button" data-form-reset>
+                Send another enquiry
+              </button>
             </div>
-
-            <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
         </div>
       </section>
