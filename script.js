@@ -143,12 +143,8 @@ contactForms.forEach((form) => {
     formData.append("submitted_at", new Date().toISOString());
 
     submitButton?.setAttribute("disabled", "true");
-    submitButton?.classList.add("is-loading");
-    if (submitButton) {
-      submitButton.textContent = "Sending...";
-    }
     form.setAttribute("aria-busy", "true");
-    setFormStatus(form, "Sending now. This can take a few seconds.");
+    setFormStatus(form, "Sending. This can take a few seconds.");
 
     try {
       await fetch(endpoint, {
@@ -172,7 +168,6 @@ contactForms.forEach((form) => {
         "is-error",
       );
     } finally {
-      submitButton?.classList.remove("is-loading");
       if (submitButton) {
         submitButton.textContent = defaultButtonLabel;
       }
