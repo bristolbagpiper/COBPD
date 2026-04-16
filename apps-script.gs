@@ -2,22 +2,51 @@ const RECIPIENT_EMAIL = "aaron.george.smart@gmail.com";
 const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1Q1S6Ab-GbNCqK74XxjIkwFB1sOJ3va6SlZNnEbBJRGQ/edit?gid=1546190981#gid=1546190981";
 const RATE_LIMIT_WINDOW_SECONDS = 120;
 const MAX_MESSAGE_LENGTH = 4000;
+const STATUS_TTL_SECONDS = 600;
 
-function doGet() {
-  return respond_(200, {
-    ok: true,
-    service: "cobpd-forms",
-    timestamp: new Date().toISOString(),
-  });
+function doGet(e) {
+  const params = e && e.parameter ? e.parameter : {};
+  const action = params.action || "health";
+
+  if (action === "status") {
+    const requestId = params.request_id || "";
+    const status = requestId ? readStatus_(requestId) : null;
+
+    return respond_(
+      200,
+      status || {
+        ok: true,
+        received: false,
+        request_id: requestId,
+      },
+      params.callback,
+    );
+  }
+
+  return respond_(
+    200,
+    {
+      ok: true,
+      service: "cobpd-forms",
+      timestamp: new Date().toISOString(),
+    },
+    params.callback,
+  );
 }
 
 function doPost(e) {
   const data = e && e.parameter ? e.parameter : {};
-  const requestId = Utilities.getUuid();
+  const requestId = data.request_id || Utilities.getUuid();
   const kind = data.form_kind || "general";
 
   if (data.website) {
     safeAppendSubmission_(kind, data, requestId, "spam_blocked", "");
+    storeStatus_(requestId, {
+      ok: true,
+      received: true,
+      request_id: requestId,
+      state: "spam_blocked",
+    });
     return respond_(200, {
       ok: true,
       received: true,
@@ -29,6 +58,13 @@ function doPost(e) {
 
   if (validationError) {
     safeAppendSubmission_(kind, data, requestId, "validation_failed", validationError);
+    storeStatus_(requestId, {
+      ok: false,
+      received: true,
+      request_id: requestId,
+      state: "validation_failed",
+      error: validationError,
+    });
     return respond_(400, {
       ok: false,
       error: validationError,
@@ -38,12 +74,26 @@ function doPost(e) {
 
   if (isRateLimited_(data)) {
     safeAppendSubmission_(kind, data, requestId, "rate_limited", "");
+    storeStatus_(requestId, {
+      ok: false,
+      received: true,
+      request_id: requestId,
+      state: "rate_limited",
+      error: "rate_limited",
+    });
     return respond_(429, {
       ok: false,
       error: "rate_limited",
       request_id: requestId,
     });
   }
+
+  storeStatus_(requestId, {
+    ok: true,
+    received: true,
+    request_id: requestId,
+    state: "received",
+  });
 
   try {
     MailApp.sendEmail({
@@ -54,6 +104,12 @@ function doPost(e) {
     });
 
     safeAppendSubmission_(kind, data, requestId, "emailed", "");
+    storeStatus_(requestId, {
+      ok: true,
+      received: true,
+      request_id: requestId,
+      state: "emailed",
+    });
 
     return respond_(200, {
       ok: true,
@@ -65,6 +121,13 @@ function doPost(e) {
 
     safeAppendSubmission_(kind, data, requestId, "email_failed", message);
     safeLogMessage_("doPost failed for request " + requestId + ": " + message);
+    storeStatus_(requestId, {
+      ok: false,
+      received: true,
+      request_id: requestId,
+      state: "email_failed",
+      error: message,
+    });
 
     return respond_(500, {
       ok: false,
@@ -110,6 +173,23 @@ function isRateLimited_(data) {
 
   cache.put(key, "1", RATE_LIMIT_WINDOW_SECONDS);
   return false;
+}
+
+function storeStatus_(requestId, payload) {
+  if (!requestId) {
+    return;
+  }
+
+  CacheService.getScriptCache().put(
+    "status:" + requestId,
+    JSON.stringify(payload),
+    STATUS_TTL_SECONDS,
+  );
+}
+
+function readStatus_(requestId) {
+  const raw = CacheService.getScriptCache().get("status:" + requestId);
+  return raw ? JSON.parse(raw) : null;
 }
 
 function safeAppendSubmission_(kind, data, requestId, status, errorMessage) {
@@ -250,7 +330,7 @@ function buildBody_(kind, data, requestId) {
   return lines.join("\n");
 }
 
-function respond_(status, payload) {
+function respond_(status, payload, callback) {
   const body = JSON.stringify(
     Object.assign(
       {
@@ -259,6 +339,12 @@ function respond_(status, payload) {
       payload || {},
     ),
   );
+
+  if (callback) {
+    return ContentService.createTextOutput(callback + "(" + body + ");").setMimeType(
+      ContentService.MimeType.JAVASCRIPT,
+    );
+  }
 
   return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
 }
