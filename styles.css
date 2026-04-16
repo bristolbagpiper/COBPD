@@ -282,9 +282,11 @@ h2 {
 }
 
 .section--sand {
-  background: var(--sand);
-  border-top: 1px solid rgba(4, 6, 31, 0.05);
-  border-bottom: 1px solid rgba(4, 6, 31, 0.05);
+  background: linear-gradient(180deg, rgba(15, 125, 89, 0.055), rgba(15, 125, 89, 0.035));
+}
+
+.section--tint {
+  background: linear-gradient(180deg, rgba(23, 127, 156, 0.06), rgba(15, 125, 89, 0.045));
 }
 
 .section--deep {
@@ -417,6 +419,12 @@ h2 {
   background: rgba(23, 127, 156, 0.06);
   border-color: rgba(23, 127, 156, 0.2);
   color: var(--teal);
+}
+
+.button--ghost-subtle {
+  background: transparent;
+  border-color: rgba(4, 6, 31, 0.18);
+  color: var(--ink);
 }
 
 .text-link {
