@@ -5,6 +5,7 @@ const driftTarget = document.querySelector("[data-drift]");
 const revealTargets = document.querySelectorAll(".reveal");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contactForms = document.querySelectorAll("[data-contact-form]");
+const faqItems = document.querySelectorAll(".faq-item");
 const upcomingSchedule = document.querySelector("[data-upcoming-schedule]");
 const liveLegacy = document.querySelector("[data-live-legacy]");
 const nextGigBanner = document.querySelector("[data-next-gig-banner]");
@@ -43,6 +44,22 @@ if (menuToggle && nav) {
 
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMenu);
+  });
+}
+
+if (faqItems.length) {
+  faqItems.forEach((item) => {
+    item.addEventListener("toggle", () => {
+      if (!item.open) {
+        return;
+      }
+
+      faqItems.forEach((otherItem) => {
+        if (otherItem !== item) {
+          otherItem.removeAttribute("open");
+        }
+      });
+    });
   });
 }
 
