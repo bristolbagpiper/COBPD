@@ -7,6 +7,7 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contactForms = document.querySelectorAll("[data-contact-form]");
 const upcomingSchedule = document.querySelector("[data-upcoming-schedule]");
 const liveLegacy = document.querySelector("[data-live-legacy]");
+const nextGigBanner = document.querySelector("[data-next-gig-banner]");
 const staticLegacyYears = new Set(
   Array.from(document.querySelectorAll("#legacy .legacy-grid > .legacy-year h3"))
     .map((heading) => heading.textContent.trim())
@@ -270,6 +271,22 @@ const getToday = () => {
   return today;
 };
 
+const updateNextGigBanner = (gig) => {
+  if (!nextGigBanner) {
+    return;
+  }
+
+  if (!gig) {
+    nextGigBanner.textContent =
+      "Upcoming gig details are loading. Visit the events page for the latest schedule.";
+    return;
+  }
+
+  const timeSuffix = gig.time && gig.time !== "Time TBC" ? `, ${gig.time}` : "";
+  nextGigBanner.textContent =
+    `Next public appearance: ${gig.name}, ${gig.location} on ${fullDateFormatter.format(gig.date)}${timeSuffix}.`;
+};
+
 const renderScheduleItem = (gig, isNext) => `
   <article class="schedule-item${isNext ? " schedule-item--next" : ""}">
     <div class="schedule-date" aria-hidden="true">
@@ -411,7 +428,7 @@ const renderLiveLegacy = (gigs) => {
 };
 
 const loadGigsFromCsv = async () => {
-  if (!upcomingSchedule && !liveLegacy) {
+  if (!upcomingSchedule && !liveLegacy && !nextGigBanner) {
     return;
   }
 
@@ -445,9 +462,12 @@ const loadGigsFromCsv = async () => {
       )
       .sort((firstGig, secondGig) => secondGig.date.getTime() - firstGig.date.getTime());
 
+    updateNextGigBanner(upcomingGigs[0] || null);
     renderUpcomingSchedule(upcomingGigs);
     renderLiveLegacy(completedGigs);
-  } catch {}
+  } catch {
+    updateNextGigBanner(null);
+  }
 };
 
 const setFormStatus = (form, message, tone = "") => {
