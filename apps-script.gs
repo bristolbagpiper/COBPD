@@ -3,6 +3,14 @@ const SPREADSHEET_ID = "1Se4f4-P4N4gELwKRgur8HFAQ5wRimphUWzOTqyljF_0";
 const RATE_LIMIT_WINDOW_SECONDS = 120;
 const MAX_MESSAGE_LENGTH = 4000;
 
+function doGet() {
+  return respond_(200, {
+    ok: true,
+    service: "cobpd-forms",
+    timestamp: new Date().toISOString(),
+  });
+}
+
 function doPost(e) {
   const data = e && e.parameter ? e.parameter : {};
   const requestId = data.request_id || Utilities.getUuid();
