@@ -1,15 +1,16 @@
 :root {
-  --ink: #203033;
-  --ink-soft: rgba(32, 48, 51, 0.78);
-  --forest: #1e6f66;
-  --forest-deep: #173f42;
-  --sand: #f4f7f5;
-  --paper: #f8fbf8;
-  --white: #fffdfa;
-  --accent: #a84735;
-  --accent-deep: #833528;
-  --line: rgba(32, 48, 51, 0.14);
-  --shadow: 0 24px 60px rgba(24, 37, 34, 0.12);
+  --ink: #04061f;
+  --ink-soft: rgba(4, 6, 31, 0.76);
+  --forest: #0f7d59;
+  --forest-deep: #04061f;
+  --teal: #177f9c;
+  --sand: #e0ede1;
+  --paper: #f6faf6;
+  --white: #fffefb;
+  --accent: #ff5a12;
+  --accent-deep: #d94a0a;
+  --line: rgba(4, 6, 31, 0.1);
+  --shadow: 0 24px 60px rgba(4, 6, 31, 0.1);
   --font-body: "Merriweather Sans", sans-serif;
   --font-display: "Alegreya", serif;
   --shell: min(100% - 2.4rem, 1320px);
@@ -30,10 +31,7 @@ body {
   margin: 0;
   font-family: var(--font-body);
   color: var(--ink);
-  background:
-    radial-gradient(circle at top right, rgba(30, 111, 102, 0.08), transparent 26%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
-    linear-gradient(135deg, #fbfcfa, #f2f6f4 58%, #f8fbf8);
+  background: var(--paper);
   line-height: 1.58;
 }
 
@@ -77,7 +75,7 @@ button {
 }
 
 .notice-bar {
-  background: #183e40;
+  background: var(--teal);
   color: rgba(255, 253, 248, 0.84);
   font-size: 0.9rem;
   letter-spacing: 0.03em;
@@ -99,7 +97,7 @@ button {
   top: 0;
   z-index: 50;
   min-height: var(--nav-height);
-  background: rgba(39, 72, 69, 0.88);
+  background: rgba(4, 6, 31, 0.92);
   backdrop-filter: blur(16px);
   transition:
     background-color 220ms ease,
@@ -107,8 +105,8 @@ button {
 }
 
 .site-header.is-scrolled {
-  background: rgba(28, 61, 58, 0.95);
-  box-shadow: 0 10px 28px rgba(5, 8, 7, 0.18);
+  background: rgba(4, 6, 31, 0.98);
+  box-shadow: 0 10px 28px rgba(4, 6, 31, 0.18);
 }
 
 .site-header__inner {
@@ -211,8 +209,8 @@ button {
 
 .page-hero__veil {
   background:
-    linear-gradient(180deg, rgba(14, 31, 33, 0.08) 0%, rgba(14, 31, 33, 0.24) 38%, rgba(14, 31, 33, 0.68) 100%),
-    linear-gradient(90deg, rgba(23, 63, 66, 0.74) 0%, rgba(23, 63, 66, 0.18) 58%, rgba(23, 63, 66, 0.06) 100%);
+    linear-gradient(180deg, rgba(4, 6, 31, 0.06) 0%, rgba(4, 6, 31, 0.22) 36%, rgba(4, 6, 31, 0.74) 100%),
+    linear-gradient(90deg, rgba(4, 6, 31, 0.72) 0%, rgba(15, 125, 89, 0.16) 55%, rgba(23, 127, 156, 0.12) 100%);
 }
 
 .page-hero__content {
@@ -285,14 +283,14 @@ h2 {
 
 .section--sand {
   background: var(--sand);
-  border-top: 1px solid rgba(32, 48, 51, 0.06);
-  border-bottom: 1px solid rgba(32, 48, 51, 0.06);
+  border-top: 1px solid rgba(4, 6, 31, 0.05);
+  border-bottom: 1px solid rgba(4, 6, 31, 0.05);
 }
 
 .section--deep {
   background:
-    radial-gradient(circle at top left, rgba(168, 71, 53, 0.14), transparent 34%),
-    linear-gradient(180deg, #235a56, #173f42);
+    radial-gradient(circle at top left, rgba(255, 90, 18, 0.12), transparent 30%),
+    linear-gradient(180deg, #07142d, #04061f);
   color: var(--white);
 }
 
@@ -400,7 +398,7 @@ h2 {
 .button--solid {
   background: var(--accent);
   color: var(--white);
-  box-shadow: 0 10px 24px rgba(131, 53, 40, 0.24);
+  box-shadow: 0 10px 24px rgba(255, 90, 18, 0.24);
 }
 
 .button--ghost {
@@ -416,9 +414,9 @@ h2 {
 }
 
 .button--ghost-dark {
-  background: rgba(198, 91, 52, 0.1);
-  border-color: rgba(168, 71, 53, 0.32);
-  color: var(--accent-deep);
+  background: rgba(23, 127, 156, 0.06);
+  border-color: rgba(23, 127, 156, 0.2);
+  color: var(--teal);
 }
 
 .text-link {
@@ -467,7 +465,7 @@ h2 {
 
 .faq-item {
   padding: 1rem 0 1.1rem;
-  border-top: 1px solid rgba(17, 32, 25, 0.14);
+  border-top: 1px solid rgba(4, 6, 31, 0.12);
 }
 
 .faq-item summary {
@@ -494,16 +492,16 @@ h2 {
   display: grid;
   gap: 1rem;
   padding: 1.6rem 1.8rem;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(32, 48, 51, 0.1);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(4, 6, 31, 0.07);
   border-radius: 1.5rem;
 }
 
 .site-footer {
   padding: clamp(3.6rem, 7vw, 6rem) 0;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.04)),
-    linear-gradient(180deg, #1f5552, #16383b);
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.03)),
+    linear-gradient(180deg, #07142d, #04061f);
   color: var(--white);
 }
 
