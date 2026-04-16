@@ -1451,6 +1451,7 @@ h2 {
 }
 
 .form-note {
+  margin: 0;
   color: var(--ink-soft);
 }
 
