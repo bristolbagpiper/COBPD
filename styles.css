@@ -395,7 +395,7 @@ h2 {
 
 .home-booking {
   display: grid;
-  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.2fr);
   gap: clamp(1.8rem, 4vw, 3.2rem);
   align-items: start;
   max-width: 62rem;
@@ -407,14 +407,15 @@ h2 {
 }
 
 .home-booking h2 {
-  font-size: clamp(1.85rem, 3.2vw, 2.9rem);
+  font-size: clamp(1.7rem, 2.8vw, 2.45rem);
   line-height: 0.98;
-  max-width: 16rem;
+  max-width: 24rem;
   margin: 0;
 }
 
 .home-booking__intro {
   text-align: left;
+  align-self: center;
 }
 
 .home-booking__body {
