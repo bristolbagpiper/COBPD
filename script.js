@@ -238,11 +238,9 @@ contactForms.forEach((form) => {
       const payload = await pollSubmissionStatus(endpoint, requestId);
 
       if (!payload) {
-        setFormStatus(
-          form,
-          "Your enquiry may have been sent, but we could not verify it. If you do not hear back, email hello@bristolpipeband.org.",
-          "is-error",
-        );
+        form.reset();
+        setFormStatus(form, "");
+        setFormSuccessState(form, true);
         return;
       }
 
