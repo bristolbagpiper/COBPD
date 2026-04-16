@@ -17,7 +17,7 @@ function doPost(e) {
   const kind = data.form_kind || "general";
 
   if (data.website) {
-    logSubmissionAttempt_(kind, data, requestId, "spam_blocked", "");
+    safeLogSubmissionAttempt_(kind, data, requestId, "spam_blocked", "");
     return respond_(200, {
       ok: true,
       received: true,
@@ -28,7 +28,7 @@ function doPost(e) {
   const validationError = validateSubmission_(data);
 
   if (validationError) {
-    logSubmissionAttempt_(kind, data, requestId, "validation_failed", validationError);
+    safeLogSubmissionAttempt_(kind, data, requestId, "validation_failed", validationError);
     return respond_(400, {
       ok: false,
       error: validationError,
@@ -37,7 +37,7 @@ function doPost(e) {
   }
 
   if (isRateLimited_(data)) {
-    logSubmissionAttempt_(kind, data, requestId, "rate_limited", "");
+    safeLogSubmissionAttempt_(kind, data, requestId, "rate_limited", "");
     return respond_(429, {
       ok: false,
       error: "rate_limited",
@@ -45,7 +45,7 @@ function doPost(e) {
     });
   }
 
-  const logRef = logSubmissionAttempt_(kind, data, requestId, "received", "");
+  const logRef = safeLogSubmissionAttempt_(kind, data, requestId, "received", "");
   const subject = buildSubject_(kind, data);
   const body = buildBody_(kind, data, requestId);
 
@@ -57,7 +57,7 @@ function doPost(e) {
       replyTo: data.email || undefined,
     });
   } catch (error) {
-    updateSubmissionStatus_(logRef, "email_failed", getErrorMessage_(error));
+    safeUpdateSubmissionStatus_(logRef, "email_failed", getErrorMessage_(error), requestId);
 
     return respond_(500, {
       ok: false,
@@ -66,7 +66,7 @@ function doPost(e) {
     });
   }
 
-  updateSubmissionStatus_(logRef, "emailed", "");
+  safeUpdateSubmissionStatus_(logRef, "emailed", "", requestId);
 
   return respond_(200, {
     ok: true,
@@ -113,6 +113,17 @@ function isRateLimited_(data) {
   return false;
 }
 
+function safeLogSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
+  try {
+    return logSubmissionAttempt_(kind, data, requestId, status, errorMessage);
+  } catch (error) {
+    console.error(
+      "Logging failed during " + status + " for request " + requestId + ": " + getErrorMessage_(error),
+    );
+    return null;
+  }
+}
+
 function logSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
   if (!SPREADSHEET_ID) {
     return null;
@@ -144,6 +155,16 @@ function logSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
     sheetId: sheet.getSheetId(),
     row: sheet.getLastRow(),
   };
+}
+
+function safeUpdateSubmissionStatus_(logRef, status, errorMessage, requestId) {
+  try {
+    updateSubmissionStatus_(logRef, status, errorMessage);
+  } catch (error) {
+    console.error(
+      "Status update failed during " + status + " for request " + requestId + ": " + getErrorMessage_(error),
+    );
+  }
 }
 
 function updateSubmissionStatus_(logRef, status, errorMessage) {
