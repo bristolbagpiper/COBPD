@@ -566,6 +566,12 @@ h2 {
   transform: translateY(-2px);
 }
 
+.button[disabled] {
+  opacity: 0.58;
+  cursor: wait;
+  transform: none;
+}
+
 .button--solid {
   background: var(--accent);
   color: var(--white);
@@ -674,6 +680,97 @@ h2 {
   border-radius: 1.5rem;
 }
 
+.form-card {
+  display: grid;
+  gap: 1.35rem;
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(4, 6, 31, 0.08);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field--hidden {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.field__label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.field__control {
+  width: 100%;
+  min-height: 3.1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(4, 6, 31, 0.14);
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font: inherit;
+}
+
+.field__control:focus {
+  outline: 2px solid rgba(23, 127, 156, 0.22);
+  outline-offset: 2px;
+  border-color: rgba(23, 127, 156, 0.36);
+}
+
+.field__control--textarea {
+  min-height: 10.5rem;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1rem;
+}
+
+.form-note,
+.form-status {
+  font-size: 0.98rem;
+}
+
+.form-note a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.form-status {
+  min-height: 1.4rem;
+  color: var(--ink-soft);
+}
+
+.form-status.is-error {
+  color: #9a2d14;
+}
+
+.form-status.is-success {
+  color: #0f7d59;
+}
+
 .site-footer {
   padding: clamp(3.6rem, 7vw, 6rem) 0;
   background:
@@ -770,7 +867,8 @@ body.has-motion .reveal.is-visible {
   .photo-grid--about,
   .photo-grid--events,
   .photo-ribbon,
-  .home-booking {
+  .home-booking,
+  .form-grid {
     grid-template-columns: 1fr;
   }
 

@@ -4,6 +4,13 @@ const nav = document.querySelector("[data-nav]");
 const driftTarget = document.querySelector("[data-drift]");
 const revealTargets = document.querySelectorAll(".reveal");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const contactForms = document.querySelectorAll("[data-contact-form]");
+
+// Paste your deployed Google Apps Script web app URLs here.
+const FORM_ENDPOINTS = {
+  booking: "",
+  joining: "",
+};
 
 const syncHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 24);
@@ -63,6 +70,80 @@ const syncDrift = () => {
   const offset = Math.min(window.scrollY * 0.12, 42);
   driftTarget.style.setProperty("--hero-drift", `${offset}px`);
 };
+
+const setFormStatus = (form, message, tone = "") => {
+  const status = form.querySelector("[data-form-status]");
+
+  if (!status) {
+    return;
+  }
+
+  status.textContent = message;
+  status.classList.remove("is-error", "is-success");
+
+  if (tone) {
+    status.classList.add(tone);
+  }
+};
+
+contactForms.forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.reportValidity()) {
+      return;
+    }
+
+    const kind = form.getAttribute("data-contact-form");
+    const endpoint = kind ? FORM_ENDPOINTS[kind] : "";
+    const submitButton = form.querySelector('button[type="submit"]');
+    const formData = new FormData(form);
+
+    if (formData.get("website")) {
+      form.reset();
+      setFormStatus(form, "Thanks. Your enquiry has been sent.", "is-success");
+      return;
+    }
+
+    if (!endpoint) {
+      setFormStatus(
+        form,
+        "This form is not wired yet. Add the Google Apps Script URL in script.js or email hello@bristolpipeband.org.",
+        "is-error",
+      );
+      return;
+    }
+
+    formData.append("form_kind", kind || "general");
+    formData.append("page", window.location.pathname);
+    formData.append("submitted_at", new Date().toISOString());
+
+    submitButton?.setAttribute("disabled", "true");
+    setFormStatus(form, "Sending...");
+
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: new URLSearchParams(formData).toString(),
+      });
+
+      form.reset();
+      setFormStatus(form, "Thanks. Your enquiry has been sent.", "is-success");
+    } catch {
+      setFormStatus(
+        form,
+        "There was a problem sending the form. Please try again or email hello@bristolpipeband.org.",
+        "is-error",
+      );
+    } finally {
+      submitButton?.removeAttribute("disabled");
+    }
+  });
+});
 
 window.addEventListener("scroll", syncHeader, { passive: true });
 window.addEventListener("scroll", syncDrift, { passive: true });

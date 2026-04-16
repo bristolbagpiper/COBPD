@@ -66,23 +66,16 @@
           <h1>Full band, smaller ensemble or individual player.</h1>
           <p class="page-hero__lede">
             Whether you are looking for a full band, a smaller ensemble or individual player,
-            click on the booking form link to start a discussion about your event and find out
-            what we can do for you.
+            complete the form below to start a discussion about your event and find out what we
+            can do for you.
           </p>
           <div class="cta-row">
-            <a
-              class="button button--solid"
-              href="https://forms.office.com/e/Gpx1rGrA9m"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Book us contact form
-            </a>
+            <a class="button button--solid" href="#booking-form">Booking form</a>
           </div>
         </div>
       </section>
 
-      <section class="section section--paper reveal">
+      <section class="section section--paper reveal" id="booking-form">
         <div class="shell grid-two grid-two--balanced">
           <div class="stack">
             <p>
@@ -95,11 +88,74 @@
               privileged to perform at a wide range of public events, private functions, and
               festivals in and around Bristol, the South West, and abroad.
             </p>
+
+            <p>
+              Use the form to tell us the date, location and type of event. If you are not sure
+              whether you need the full band or a smaller group, say so and we can advise.
+            </p>
           </div>
 
-          <figure class="media-frame media-frame--tall">
-            <img src="assets/images/live/live-13.jpg" alt="Band drummers standing together in practice" />
-          </figure>
+          <form class="form-card" data-contact-form="booking" novalidate>
+            <div class="form-grid">
+              <label class="field">
+                <span class="field__label">Your name</span>
+                <input class="field__control" type="text" name="name" autocomplete="name" required />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Email</span>
+                <input class="field__control" type="email" name="email" autocomplete="email" required />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Phone</span>
+                <input class="field__control" type="tel" name="phone" autocomplete="tel" />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Type of booking</span>
+                <select class="field__control" name="booking_type" required>
+                  <option value="">Select one</option>
+                  <option>Full band</option>
+                  <option>Smaller ensemble</option>
+                  <option>Individual piper or drummer</option>
+                  <option>Not sure yet</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span class="field__label">Event date</span>
+                <input class="field__control" type="date" name="event_date" />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Location</span>
+                <input class="field__control" type="text" name="location" autocomplete="address-level2" />
+              </label>
+
+              <label class="field field--full">
+                <span class="field__label">Event details</span>
+                <textarea
+                  class="field__control field__control--textarea"
+                  name="message"
+                  rows="6"
+                  required
+                ></textarea>
+              </label>
+
+              <label class="field field--hidden" aria-hidden="true">
+                <span class="field__label">Leave this blank</span>
+                <input class="field__control" type="text" name="website" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button--solid" type="submit">Send booking enquiry</button>
+              <p class="form-note">Or email <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>.</p>
+            </div>
+
+            <p class="form-status" data-form-status aria-live="polite"></p>
+          </form>
         </div>
       </section>
     </main>
@@ -110,11 +166,7 @@
           <p class="eyebrow">Get in touch</p>
           <h2>We respond best with completing one of our web contact forms.</h2>
           <ul class="footer-list">
-            <li>
-              <a href="https://forms.office.com/e/Gpx1rGrA9m" target="_blank" rel="noreferrer">
-                Booking form
-              </a>
-            </li>
+            <li><a href="#booking-form">Booking form</a></li>
             <li><a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a></li>
           </ul>
         </div>

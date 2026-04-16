@@ -68,19 +68,12 @@
             you.
           </p>
           <div class="cta-row">
-            <a
-              class="button button--solid"
-              href="https://forms.office.com/e/SE9nUhqJ7f"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Join the band contact form
-            </a>
+            <a class="button button--solid" href="#joining-form">Join the band form</a>
           </div>
         </div>
       </section>
 
-      <section class="section section--tint reveal">
+      <section class="section section--tint reveal" id="joining-form">
         <div class="shell grid-two grid-two--balanced">
           <div class="stack">
             <p>
@@ -98,12 +91,75 @@
             </p>
           </div>
 
-          <figure class="media-frame media-frame--tall">
-            <img
-              src="assets/images/live/live-23.jpg"
-              alt="Piper smiling before a parade performance"
-            />
-          </figure>
+          <form class="form-card" data-contact-form="joining" novalidate>
+            <div class="form-grid">
+              <label class="field">
+                <span class="field__label">Your name</span>
+                <input class="field__control" type="text" name="name" autocomplete="name" required />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Email</span>
+                <input class="field__control" type="email" name="email" autocomplete="email" required />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Phone</span>
+                <input class="field__control" type="tel" name="phone" autocomplete="tel" />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Interested in</span>
+                <select class="field__control" name="interest" required>
+                  <option value="">Select one</option>
+                  <option>Piping</option>
+                  <option>Drumming</option>
+                  <option>Either</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span class="field__label">Current level</span>
+                <select class="field__control" name="experience_level" required>
+                  <option value="">Select one</option>
+                  <option>Complete beginner</option>
+                  <option>Some experience</option>
+                  <option>Experienced player</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span class="field__label">Age group</span>
+                <select class="field__control" name="age_group">
+                  <option value="">Prefer not to say</option>
+                  <option>Under 18</option>
+                  <option>18 and over</option>
+                </select>
+              </label>
+
+              <label class="field field--full">
+                <span class="field__label">Tell us a bit about yourself</span>
+                <textarea
+                  class="field__control field__control--textarea"
+                  name="message"
+                  rows="6"
+                  required
+                ></textarea>
+              </label>
+
+              <label class="field field--hidden" aria-hidden="true">
+                <span class="field__label">Leave this blank</span>
+                <input class="field__control" type="text" name="website" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button--solid" type="submit">Send joining enquiry</button>
+              <p class="form-note">Or email <a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a>.</p>
+            </div>
+
+            <p class="form-status" data-form-status aria-live="polite"></p>
+          </form>
         </div>
       </section>
     </main>
@@ -114,11 +170,7 @@
           <p class="eyebrow">Get in touch</p>
           <h2>We respond best with completing one of our web contact forms.</h2>
           <ul class="footer-list">
-            <li>
-              <a href="https://forms.office.com/e/SE9nUhqJ7f" target="_blank" rel="noreferrer">
-                Joining form
-              </a>
-            </li>
+            <li><a href="#joining-form">Joining form</a></li>
             <li><a href="mailto:hello@bristolpipeband.org">hello@bristolpipeband.org</a></li>
           </ul>
         </div>
