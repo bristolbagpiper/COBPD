@@ -1,6 +1,5 @@
 const RECIPIENT_EMAIL = "aaron.george.smart@gmail.com";
 const SPREADSHEET_ID = "";
-const STATUS_TTL_SECONDS = 600;
 const RATE_LIMIT_WINDOW_SECONDS = 120;
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -9,11 +8,6 @@ function doPost(e) {
   const requestId = data.request_id || Utilities.getUuid();
 
   if (data.website) {
-    storeStatus_(requestId, {
-      ok: true,
-      received: true,
-      kind: data.form_kind || "general",
-    });
     return respond_(200, {
       ok: true,
       received: true,
@@ -24,11 +18,6 @@ function doPost(e) {
   const validationError = validateSubmission_(data);
 
   if (validationError) {
-    storeStatus_(requestId, {
-      ok: false,
-      error: validationError,
-      request_id: requestId,
-    });
     return respond_(400, {
       ok: false,
       error: validationError,
@@ -37,11 +26,6 @@ function doPost(e) {
   }
 
   if (isRateLimited_(data)) {
-    storeStatus_(requestId, {
-      ok: false,
-      error: "rate_limited",
-      request_id: requestId,
-    });
     return respond_(429, {
       ok: false,
       error: "rate_limited",
@@ -62,39 +46,11 @@ function doPost(e) {
 
   appendSubmissionToSheet_(kind, data, requestId);
 
-  storeStatus_(requestId, {
-    ok: true,
-    received: true,
-    kind: kind,
-    request_id: requestId,
-  });
-
   return respond_(200, {
     ok: true,
     received: true,
     request_id: requestId,
   });
-}
-
-function doGet(e) {
-  const params = e && e.parameter ? e.parameter : {};
-  const action = params.action || "status";
-
-  if (action !== "status") {
-    return respond_(400, {
-      ok: false,
-      error: "unsupported_action",
-    }, params.callback);
-  }
-
-  const requestId = params.request_id || "";
-  const status = requestId ? readStatus_(requestId) : null;
-
-  return respond_(200, status || {
-    ok: true,
-    received: false,
-    request_id: requestId,
-  }, params.callback);
 }
 
 function validateSubmission_(data) {
@@ -133,23 +89,6 @@ function isRateLimited_(data) {
 
   cache.put(key, "1", RATE_LIMIT_WINDOW_SECONDS);
   return false;
-}
-
-function storeStatus_(requestId, payload) {
-  if (!requestId) {
-    return;
-  }
-
-  CacheService.getScriptCache().put(
-    "status:" + requestId,
-    JSON.stringify(payload),
-    STATUS_TTL_SECONDS,
-  );
-}
-
-function readStatus_(requestId) {
-  const raw = CacheService.getScriptCache().get("status:" + requestId);
-  return raw ? JSON.parse(raw) : null;
 }
 
 function appendSubmissionToSheet_(kind, data, requestId) {
@@ -243,16 +182,10 @@ function buildBody_(kind, data, requestId) {
   return lines.join("\n");
 }
 
-function respond_(status, payload, callback) {
+function respond_(status, payload) {
   const body = JSON.stringify(Object.assign({
     status: status,
   }, payload || {}));
-
-  if (callback) {
-    return ContentService.createTextOutput(
-      callback + "(" + body + ");"
-    ).setMimeType(ContentService.MimeType.JAVASCRIPT);
-  }
 
   return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
 }
