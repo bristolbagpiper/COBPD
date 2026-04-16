@@ -704,7 +704,7 @@ const formatMemberDate = (value) => {
 };
 
 const getMembersRoleLabel = (member) =>
-  [member.instrument, member.section, member.role].filter(Boolean).join(" · ");
+  [member.instrument, member.section].filter(Boolean).join(" · ");
 
 const getResponseTagClass = (answer) => {
   if (answer === "yes") {
@@ -756,10 +756,7 @@ const renderRosterMember = (member) => {
     member.answer === "maybe" && member.reason
       ? `<p class="members-roster-member__meta">${escapeHtml(member.reason)}</p>`
       : "";
-  const metaBits = [member.role]
-    .concat(answeredAt ? [`Updated ${answeredAt}`] : [])
-    .filter(Boolean)
-    .join(" · ");
+  const metaBits = answeredAt ? `Updated ${answeredAt}` : "";
 
   return `
     <article class="members-roster-member">
