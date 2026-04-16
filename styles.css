@@ -1,15 +1,15 @@
 :root {
-  --ink: #233136;
-  --ink-soft: rgba(35, 49, 54, 0.76);
-  --forest: #3b5b4d;
-  --forest-deep: #1a2d2e;
-  --sand: #f0dec2;
-  --paper: #f8f1e5;
+  --ink: #22363a;
+  --ink-soft: rgba(34, 54, 58, 0.78);
+  --forest: #2f5e57;
+  --forest-deep: #17383c;
+  --sand: #efd6a6;
+  --paper: #fbf2e4;
   --white: #fffdfa;
-  --accent: #b44d3d;
-  --accent-deep: #8f3a2e;
-  --line: rgba(35, 49, 54, 0.14);
-  --shadow: 0 24px 60px rgba(34, 37, 26, 0.14);
+  --accent: #c65b34;
+  --accent-deep: #9f4525;
+  --line: rgba(34, 54, 58, 0.14);
+  --shadow: 0 24px 60px rgba(39, 44, 23, 0.12);
   --font-body: "Merriweather Sans", sans-serif;
   --font-display: "Alegreya", serif;
   --shell: min(100% - 2.4rem, 1320px);
@@ -31,8 +31,10 @@ body {
   font-family: var(--font-body);
   color: var(--ink);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
-    linear-gradient(135deg, #fff7ec, #f4e4cd 56%, #f9f4ea);
+    radial-gradient(circle at top right, rgba(198, 91, 52, 0.08), transparent 28%),
+    radial-gradient(circle at top left, rgba(47, 94, 87, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.24)),
+    linear-gradient(135deg, #fff7ea, #f6e7c6 52%, #fcf5e9);
   line-height: 1.58;
 }
 
@@ -76,7 +78,7 @@ button {
 }
 
 .notice-bar {
-  background: #193234;
+  background: #184449;
   color: rgba(255, 253, 248, 0.84);
   font-size: 0.9rem;
   letter-spacing: 0.03em;
@@ -98,7 +100,7 @@ button {
   top: 0;
   z-index: 50;
   min-height: var(--nav-height);
-  background: rgba(58, 69, 63, 0.86);
+  background: rgba(54, 72, 66, 0.86);
   backdrop-filter: blur(16px);
   transition:
     background-color 220ms ease,
@@ -106,7 +108,7 @@ button {
 }
 
 .site-header.is-scrolled {
-  background: rgba(44, 55, 50, 0.94);
+  background: rgba(37, 61, 57, 0.94);
   box-shadow: 0 10px 28px rgba(5, 8, 7, 0.18);
 }
 
@@ -210,8 +212,8 @@ button {
 
 .page-hero__veil {
   background:
-    linear-gradient(180deg, rgba(18, 27, 28, 0.08) 0%, rgba(18, 27, 28, 0.28) 40%, rgba(18, 27, 28, 0.72) 100%),
-    linear-gradient(90deg, rgba(26, 39, 41, 0.72) 0%, rgba(26, 39, 41, 0.16) 58%, rgba(26, 39, 41, 0.05) 100%);
+    linear-gradient(180deg, rgba(15, 35, 37, 0.08) 0%, rgba(15, 35, 37, 0.24) 38%, rgba(15, 35, 37, 0.68) 100%),
+    linear-gradient(90deg, rgba(23, 56, 60, 0.74) 0%, rgba(23, 56, 60, 0.18) 58%, rgba(23, 56, 60, 0.06) 100%);
 }
 
 .page-hero__content {
@@ -284,14 +286,14 @@ h2 {
 
 .section--sand {
   background:
-    linear-gradient(180deg, rgba(180, 77, 61, 0.08), rgba(180, 77, 61, 0.025)),
+    linear-gradient(180deg, rgba(198, 91, 52, 0.11), rgba(198, 91, 52, 0.03)),
     var(--sand);
 }
 
 .section--deep {
   background:
-    radial-gradient(circle at top left, rgba(180, 77, 61, 0.18), transparent 34%),
-    linear-gradient(180deg, #2c4742, #1b2d2e);
+    radial-gradient(circle at top left, rgba(198, 91, 52, 0.2), transparent 34%),
+    linear-gradient(180deg, #29514d, #16383d);
   color: var(--white);
 }
 
@@ -399,7 +401,7 @@ h2 {
 .button--solid {
   background: var(--accent);
   color: var(--white);
-  box-shadow: 0 10px 24px rgba(143, 58, 46, 0.24);
+  box-shadow: 0 10px 24px rgba(159, 69, 37, 0.24);
 }
 
 .button--ghost {
@@ -415,8 +417,8 @@ h2 {
 }
 
 .button--ghost-dark {
-  background: rgba(180, 77, 61, 0.08);
-  border-color: rgba(180, 77, 61, 0.28);
+  background: rgba(198, 91, 52, 0.1);
+  border-color: rgba(198, 91, 52, 0.32);
   color: var(--accent-deep);
 }
 
@@ -493,8 +495,8 @@ h2 {
   display: grid;
   gap: 1rem;
   padding: 1.6rem 1.8rem;
-  background: rgba(255, 253, 250, 0.64);
-  border: 1px solid rgba(180, 77, 61, 0.1);
+  background: rgba(255, 251, 245, 0.72);
+  border: 1px solid rgba(198, 91, 52, 0.12);
   border-radius: 1.5rem;
 }
 
@@ -502,7 +504,7 @@ h2 {
   padding: clamp(3.6rem, 7vw, 6rem) 0;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.04)),
-    linear-gradient(180deg, #28413e, #1d2f31);
+    linear-gradient(180deg, #24504e, #173336);
   color: var(--white);
 }
 
