@@ -8,8 +8,8 @@ const contactForms = document.querySelectorAll("[data-contact-form]");
 
 // Paste your deployed Google Apps Script web app URLs here.
 const FORM_ENDPOINTS = {
-  booking: "",
-  joining: "",
+  booking: "https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec",
+  joining: "https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec",
 };
 
 const syncHeader = () => {
