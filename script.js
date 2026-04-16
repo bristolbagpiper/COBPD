@@ -7,10 +7,6 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contactForms = document.querySelectorAll("[data-contact-form]");
 const upcomingSchedule = document.querySelector("[data-upcoming-schedule]");
 const liveLegacy = document.querySelector("[data-live-legacy]");
-const nextGigName = document.querySelector("[data-next-gig-name]");
-const nextGigDate = document.querySelector("[data-next-gig-date]");
-const nextGigLocation = document.querySelector("[data-next-gig-location]");
-const nextGigTime = document.querySelector("[data-next-gig-time]");
 const staticLegacyYears = new Set(
   Array.from(document.querySelectorAll("#legacy .legacy-grid > .legacy-year h3"))
     .map((heading) => heading.textContent.trim())
@@ -274,25 +270,6 @@ const getToday = () => {
   return today;
 };
 
-const updateNextGigSummary = (gig) => {
-  if (!nextGigName || !nextGigDate || !nextGigLocation || !nextGigTime) {
-    return;
-  }
-
-  if (!gig) {
-    nextGigName.textContent = "New dates will appear here soon";
-    nextGigDate.textContent = "Schedule updating";
-    nextGigLocation.textContent = "Check back shortly";
-    nextGigTime.textContent = "Time TBC";
-    return;
-  }
-
-  nextGigName.textContent = gig.name;
-  nextGigDate.textContent = fullDateFormatter.format(gig.date);
-  nextGigLocation.textContent = gig.location;
-  nextGigTime.textContent = gig.time;
-};
-
 const renderScheduleItem = (gig, isNext) => `
   <article class="schedule-item${isNext ? " schedule-item--next" : ""}">
     <div class="schedule-date" aria-hidden="true">
@@ -322,7 +299,6 @@ const renderUpcomingSchedule = (gigs) => {
   if (!gigs.length) {
     upcomingSchedule.innerHTML =
       '<p class="schedule-empty">No upcoming gigs are listed right now. Please check back soon.</p>';
-    updateNextGigSummary(null);
     return;
   }
 
@@ -352,7 +328,6 @@ const renderUpcomingSchedule = (gigs) => {
         <article class="schedule-group">
           <div class="schedule-group__label">
             <h3 class="schedule-group__month">${escapeHtml(group.label)}</h3>
-            <p class="schedule-group__count">${countLabel(group.gigs.length, "appearance")}</p>
           </div>
           <div class="schedule-list">
             ${group.gigs
@@ -367,8 +342,6 @@ const renderUpcomingSchedule = (gigs) => {
       `,
     )
     .join("");
-
-  updateNextGigSummary(gigs[0]);
 };
 
 const renderLiveLegacy = (gigs) => {
@@ -438,7 +411,7 @@ const renderLiveLegacy = (gigs) => {
 };
 
 const loadGigsFromCsv = async () => {
-  if (!upcomingSchedule && !liveLegacy && !nextGigName) {
+  if (!upcomingSchedule && !liveLegacy) {
     return;
   }
 
@@ -474,11 +447,7 @@ const loadGigsFromCsv = async () => {
 
     renderUpcomingSchedule(upcomingGigs);
     renderLiveLegacy(completedGigs);
-  } catch {
-    if (nextGigName && !nextGigName.textContent.trim()) {
-      updateNextGigSummary(null);
-    }
-  }
+  } catch {}
 };
 
 const setFormStatus = (form, message, tone = "") => {
