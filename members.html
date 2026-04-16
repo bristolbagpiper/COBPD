@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About | City of Bristol Pipes and Drums</title>
+    <title>Members Area | City of Bristol Pipes and Drums</title>
     <meta
       name="description"
-      content="About the City of Bristol Pipes and Drums and how the band began in Bristol."
+      content="Members area for the City of Bristol Pipes and Drums gig responses and availability."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="page page--about">
+  <body class="page page--members">
     <a class="skip-link" href="#main">Skip to content</a>
 
     <div class="notice-bar">
@@ -42,7 +42,7 @@
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-nav>
           <a href="index.html">Home</a>
-          <a href="about.html" aria-current="page">About</a>
+          <a href="about.html">About</a>
           <a href="book-us.html">Book us</a>
           <a href="join-the-band.html">Join the band</a>
           <a href="events.html">Events</a>
@@ -52,80 +52,91 @@
     </header>
 
     <main id="main" class="page-main">
-      <section class="page-hero page-hero--about page-hero--compact">
+      <section class="page-hero page-hero--members page-hero--compact">
         <div class="page-hero__media" data-drift>
           <img
-            src="assets/images/live/live-01.jpg"
-            alt="City of Bristol Pipes and Drums posed together as a full band"
+            src="assets/images/live/live-11.jpg"
+            alt="Piper standing in formal dress beside a stone building"
           />
         </div>
         <div class="page-hero__veil"></div>
         <div class="page-hero__content shell">
-          <p class="eyebrow">About us</p>
-          <h1>From the back room of a pub to Bristol&rsquo;s Remembrance Parade</h1>
+          <p class="eyebrow">Members</p>
+          <h1>Gig responses, availability, and section coverage in one place.</h1>
+          <p class="page-hero__lede">
+            Sign in with the login provisioned by the band admin to reply yes, no, or maybe for
+            each gig and see how each section is shaping up.
+          </p>
         </div>
       </section>
 
       <section class="section section--paper reveal">
-        <div class="shell grid-two grid-two--copy">
-          <div class="stack">
-            <p>
-              It all began in 1997 in the back room of the Bear Pub in Hotwells. Jimmie McQueen,
-              a piper of some distinction, had not long arrived in Bristol and used this room to
-              play his pipes. He knew several local pipers and they gathered together to play and
-              be tutored by Pipe Major Brian McRae.
-            </p>
-            <p>
-              Within a few years, these pipers were joined by Army Bass Drummer John Morrison and
-              drumming tutor Tom Patterson and two exceptionally good pipers, Bill Gass and Julian
-              Smart.
-            </p>
+        <div class="shell members-shell" data-members-page>
+          <div class="members-auth" data-members-auth>
+            <div class="members-auth__intro">
+              <p class="eyebrow">Access</p>
+              <h2>Member login only.</h2>
+              <p>
+                This area is intended to replace ad hoc gig sign-up tools. Admins provision member
+                accounts separately from the public website schedule so notification emails and
+                private availability stay under control.
+              </p>
+            </div>
+
+            <form class="form-card members-login" data-members-login-form novalidate>
+              <div class="form-grid">
+                <label class="field field--full">
+                  <span class="field__label">Email</span>
+                  <input
+                    class="field__control"
+                    type="email"
+                    name="email"
+                    autocomplete="username"
+                    required
+                  />
+                </label>
+
+                <label class="field field--full">
+                  <span class="field__label">Password</span>
+                  <input
+                    class="field__control"
+                    type="password"
+                    name="password"
+                    autocomplete="current-password"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button class="button button--solid" type="submit">Sign in</button>
+              </div>
+
+              <p class="form-status" data-members-login-status aria-live="polite"></p>
+            </form>
           </div>
 
-          <div class="stack stack--tight aside-copy">
-            <p>
-              The City of Bristol Pipes and Drums band was officially constituted and affiliated to
-              the Royal Scottish Pipe Band Association. The first engagement of the Band was to
-              lead the Remembrance Day Parade in Bristol City.
-            </p>
-            <p>
-              The band now meets weekly on Sunday mornings in central Bristol to practice under
-              the current Pipe Major Julian Smart.
-            </p>
-            <p>
-              We are always ready to welcome new members, and if you would like the band to play
-              at your event please get in touch.
-            </p>
-          </div>
-        </div>
-      </section>
+          <div class="members-app" data-members-app hidden>
+            <div class="members-app__header">
+              <div class="members-app__identity">
+                <p class="eyebrow">Dashboard</p>
+                <h2 data-members-name>Member name</h2>
+                <p class="members-app__meta" data-members-role></p>
+              </div>
+              <button class="button button--ghost-dark" type="button" data-members-logout>
+                Log out
+              </button>
+            </div>
 
-      <section class="section section--sand reveal">
-        <div class="shell photo-grid photo-grid--about">
-          <figure class="media-frame media-frame--landscape media-frame--soft photo-grid__wide">
-            <img
-              src="assets/images/live/live-02.jpg"
-              alt="Side drummers standing together outdoors"
-            />
-          </figure>
-          <figure class="media-frame media-frame--square media-frame--soft">
-            <img src="assets/images/live/live-07.jpg" alt="The full band lined up on grass" />
-          </figure>
-          <figure class="media-frame media-frame--square media-frame--soft">
-            <img
-              src="assets/images/live/live-12.jpg"
-              alt="Pipe band members standing together for an outdoor engagement"
-            />
-          </figure>
-          <figure class="media-frame media-frame--square media-frame--soft">
-            <img
-              src="assets/images/live/live-14.jpg"
-              alt="Close-up of a piper speaking with someone before a performance"
-            />
-          </figure>
-          <figure class="media-frame media-frame--square media-frame--soft">
-            <img src="assets/images/live/live-18.jpg" alt="Piper in uniform playing outdoors" />
-          </figure>
+            <p class="members-app__summary">
+              Reply to each gig below. Selecting <strong>maybe</strong> lets you leave a reason,
+              and every response is timestamped when saved.
+            </p>
+
+            <p class="members-status" data-members-status aria-live="polite"></p>
+            <div class="members-empty" data-members-empty hidden></div>
+            <div class="members-gigs" data-members-gigs></div>
+          </div>
         </div>
       </section>
     </main>
