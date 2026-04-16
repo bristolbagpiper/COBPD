@@ -6,7 +6,7 @@ const revealTargets = document.querySelectorAll(".reveal");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const syncHeader = () => {
-  header?.classList.toggle("is-scrolled", window.scrollY > 32);
+  header?.classList.toggle("is-scrolled", window.scrollY > 24);
 };
 
 const closeMenu = () => {
@@ -45,8 +45,8 @@ if (!reducedMotion.matches && "IntersectionObserver" in window) {
       });
     },
     {
-      threshold: 0.18,
-      rootMargin: "0px 0px -6% 0px",
+      threshold: 0.16,
+      rootMargin: "0px 0px -5% 0px",
     },
   );
 
@@ -60,7 +60,7 @@ const syncDrift = () => {
     return;
   }
 
-  const offset = Math.min(window.scrollY * 0.12, 44);
+  const offset = Math.min(window.scrollY * 0.12, 42);
   driftTarget.style.setProperty("--hero-drift", `${offset}px`);
 };
 
@@ -70,7 +70,3 @@ window.addEventListener("resize", closeMenu);
 
 syncHeader();
 syncDrift();
-
-window.requestAnimationFrame(() => {
-  document.body.classList.add("is-ready");
-});
