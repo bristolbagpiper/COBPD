@@ -14,6 +14,7 @@
   --font-body: "Merriweather Sans", sans-serif;
   --font-display: "Alegreya", serif;
   --shell: min(100% - 2.4rem, 1320px);
+  --notice-height: 2.55rem;
   --nav-height: 5rem;
 }
 
@@ -75,15 +76,23 @@ button {
 }
 
 .notice-bar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  min-height: var(--notice-height);
+  display: flex;
+  align-items: center;
   background: var(--teal);
   color: rgba(255, 253, 248, 0.84);
   font-size: 0.9rem;
+  line-height: 1.2;
   letter-spacing: 0.03em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .notice-bar .shell {
-  padding: 0.7rem 0;
+  padding: 0.45rem 0;
+  text-align: center;
 }
 
 .notice-bar a {
@@ -94,7 +103,7 @@ button {
 
 .site-header {
   position: sticky;
-  top: 0;
+  top: var(--notice-height);
   z-index: 50;
   min-height: var(--nav-height);
   background: rgba(4, 6, 31, 0.92);
@@ -182,7 +191,7 @@ button {
 
 .page-hero {
   position: relative;
-  min-height: calc(100svh - var(--nav-height));
+  min-height: calc(100svh - var(--nav-height) - var(--notice-height));
   display: flex;
   align-items: end;
   overflow: clip;
@@ -376,6 +385,17 @@ h2 {
 
 .home-booking {
   max-width: 48rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home-booking.aside-copy {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.home-booking .cta-row {
+  justify-content: center;
 }
 
 .aside-copy {
@@ -598,28 +618,40 @@ h2 {
 }
 
 .footer-grid {
-  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
   align-items: start;
+  gap: 3.75rem;
 }
 
 .site-footer h2 {
-  max-width: 34rem;
+  max-width: 26rem;
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  line-height: 0.98;
 }
 
 .footer-list {
   display: grid;
   gap: 0.75rem;
-  margin-top: 0.2rem;
+  margin-top: 0.65rem;
 }
 
 .footer-note {
   color: rgba(255, 253, 248, 0.78);
 }
 
+.footer-grid > :first-child {
+  max-width: 30rem;
+}
+
+.footer-grid > :last-child {
+  max-width: 24rem;
+  padding-top: 0.25rem;
+}
+
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 1.25rem;
+  gap: 0.8rem 1.4rem;
 }
 
 .social-links a {
@@ -695,6 +727,7 @@ body.has-motion .reveal.is-visible {
 @media (max-width: 720px) {
   :root {
     --shell: min(100% - 1.35rem, 1320px);
+    --notice-height: 3.2rem;
     --nav-height: 4.5rem;
   }
 
@@ -708,6 +741,10 @@ body.has-motion .reveal.is-visible {
 
   .brand__sub {
     display: none;
+  }
+
+  .notice-bar {
+    font-size: 0.82rem;
   }
 
   .site-nav {
