@@ -94,8 +94,21 @@
             </p>
           </div>
 
-          <form class="form-card" data-contact-form="booking" novalidate>
+          <iframe name="booking-submit-target" class="form-submit-target" hidden></iframe>
+
+          <form
+            class="form-card"
+            data-contact-form="booking"
+            action="https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec"
+            method="post"
+            target="booking-submit-target"
+            novalidate
+          >
             <div data-form-content>
+              <input type="hidden" name="form_kind" value="booking" />
+              <input type="hidden" name="page" value="book-us.html" data-page-field />
+              <input type="hidden" name="submitted_at" value="" data-submitted-at />
+
               <div class="form-grid">
                 <label class="field">
                   <span class="field__label">Your name</span>

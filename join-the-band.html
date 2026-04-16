@@ -90,8 +90,21 @@
             </p>
           </div>
 
-          <form class="form-card" data-contact-form="joining" novalidate>
+          <iframe name="joining-submit-target" class="form-submit-target" hidden></iframe>
+
+          <form
+            class="form-card"
+            data-contact-form="joining"
+            action="https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec"
+            method="post"
+            target="joining-submit-target"
+            novalidate
+          >
             <div data-form-content>
+              <input type="hidden" name="form_kind" value="joining" />
+              <input type="hidden" name="page" value="join-the-band.html" data-page-field />
+              <input type="hidden" name="submitted_at" value="" data-submitted-at />
+
               <div class="form-grid">
                 <label class="field">
                   <span class="field__label">Your name</span>

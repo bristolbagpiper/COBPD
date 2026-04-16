@@ -6,12 +6,6 @@ const revealTargets = document.querySelectorAll(".reveal");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contactForms = document.querySelectorAll("[data-contact-form]");
 
-// Paste your deployed Google Apps Script web app URLs here.
-const FORM_ENDPOINTS = {
-  booking: "https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec",
-  joining: "https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec",
-};
-
 const syncHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 24);
 };
@@ -114,12 +108,15 @@ contactForms.forEach((form) => {
       return;
     }
 
-    const kind = form.getAttribute("data-contact-form");
-    const endpoint = kind ? FORM_ENDPOINTS[kind] : "";
+    const endpoint = form.getAttribute("action") || "";
+    const targetName = form.getAttribute("target") || "";
+    const targetFrame = targetName ? document.getElementsByName(targetName)[0] : null;
     const submitButton = form.querySelector('button[type="submit"]');
-    const formData = new FormData(form);
+    const pageField = form.querySelector("[data-page-field]");
+    const submittedAtField = form.querySelector("[data-submitted-at]");
+    const honeypot = form.querySelector('input[name="website"]');
 
-    if (formData.get("website")) {
+    if (honeypot?.value) {
       form.reset();
       setFormStatus(form, "");
       setFormSuccessState(form, true);
@@ -129,41 +126,71 @@ contactForms.forEach((form) => {
     if (!endpoint) {
       setFormStatus(
         form,
-        "This form is not wired yet. Add the Google Apps Script URL in script.js or email hello@bristolpipeband.org.",
+        "This form is not wired yet. Add the Google Apps Script URL to the form action or email hello@bristolpipeband.org.",
         "is-error",
       );
       return;
     }
 
-    formData.append("form_kind", kind || "general");
-    formData.append("page", window.location.pathname);
-    formData.append("submitted_at", new Date().toISOString());
+    if (pageField) {
+      pageField.value = window.location.pathname;
+    }
+
+    if (submittedAtField) {
+      submittedAtField.value = new Date().toISOString();
+    }
 
     submitButton?.setAttribute("disabled", "true");
     setFormStatus(form, "Sending...");
 
-    try {
-      await fetch(endpoint, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        },
-        body: new URLSearchParams(formData).toString(),
-      });
+    if (!targetFrame) {
+      setFormStatus(
+        form,
+        "This form has no submission target. Add the hidden iframe target or email hello@bristolpipeband.org.",
+        "is-error",
+      );
+      submitButton?.removeAttribute("disabled");
+      return;
+    }
 
+    let finished = false;
+    let timeoutId = 0;
+
+    const cleanup = () => {
+      window.clearTimeout(timeoutId);
+      targetFrame.removeEventListener("load", handleLoad);
+    };
+
+    const handleLoad = () => {
+      if (finished) {
+        return;
+      }
+
+      finished = true;
+      cleanup();
       form.reset();
       setFormStatus(form, "");
       setFormSuccessState(form, true);
-    } catch {
+      submitButton?.removeAttribute("disabled");
+    };
+
+    timeoutId = window.setTimeout(() => {
+      if (finished) {
+        return;
+      }
+
+      finished = true;
+      cleanup();
       setFormStatus(
         form,
-        "There was a problem sending the form. Please try again or email hello@bristolpipeband.org.",
+        "The form did not get a response in time. Try again or email hello@bristolpipeband.org.",
         "is-error",
       );
-    } finally {
       submitButton?.removeAttribute("disabled");
-    }
+    }, 12000);
+
+    targetFrame.addEventListener("load", handleLoad);
+    form.submit();
   });
 });
 
