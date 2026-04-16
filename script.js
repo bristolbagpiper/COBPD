@@ -94,12 +94,31 @@ const setFormSuccessState = (form, isSuccess) => {
 
 contactForms.forEach((form) => {
   const resetButton = form.querySelector("[data-form-reset]");
+  const targetName = form.getAttribute("target") || "";
+  const targetFrame = targetName ? document.getElementsByName(targetName)[0] : null;
+  let submitTimeoutId = 0;
 
   resetButton?.addEventListener("click", () => {
+    window.clearTimeout(submitTimeoutId);
+    form.dataset.submitting = "false";
     form.reset();
     setFormStatus(form, "");
     setFormSuccessState(form, false);
   });
+
+  if (targetFrame) {
+    targetFrame.addEventListener("load", () => {
+      if (form.dataset.submitting !== "true") {
+        return;
+      }
+
+      window.clearTimeout(submitTimeoutId);
+      form.dataset.submitting = "false";
+      form.reset();
+      setFormStatus(form, "");
+      setFormSuccessState(form, true);
+    });
+  }
 
   form.addEventListener("submit", (event) => {
     if (!form.reportValidity()) {
@@ -108,9 +127,6 @@ contactForms.forEach((form) => {
     }
 
     const endpoint = form.getAttribute("action") || "";
-    const targetName = form.getAttribute("target") || "";
-    const targetFrame = targetName ? document.getElementsByName(targetName)[0] : null;
-    const submitButton = form.querySelector('button[type="submit"]');
     const pageField = form.querySelector("[data-page-field]");
     const submittedAtField = form.querySelector("[data-submitted-at]");
     const honeypot = form.querySelector('input[name="website"]');
@@ -141,7 +157,6 @@ contactForms.forEach((form) => {
       submittedAtField.value = new Date().toISOString();
     }
 
-    submitButton?.setAttribute("disabled", "true");
     setFormStatus(form, "Sending...");
 
     if (!targetFrame) {
@@ -151,47 +166,23 @@ contactForms.forEach((form) => {
         "This form has no submission target. Add the hidden iframe target or email hello@bristolpipeband.org.",
         "is-error",
       );
-      submitButton?.removeAttribute("disabled");
       return;
     }
 
-    let finished = false;
-    let timeoutId = 0;
-
-    const cleanup = () => {
-      window.clearTimeout(timeoutId);
-      targetFrame.removeEventListener("load", handleLoad);
-    };
-
-    const handleLoad = () => {
-      if (finished) {
+    form.dataset.submitting = "true";
+    window.clearTimeout(submitTimeoutId);
+    submitTimeoutId = window.setTimeout(() => {
+      if (form.dataset.submitting !== "true") {
         return;
       }
 
-      finished = true;
-      cleanup();
-      form.reset();
-      setFormStatus(form, "");
-      setFormSuccessState(form, true);
-      submitButton?.removeAttribute("disabled");
-    };
-
-    timeoutId = window.setTimeout(() => {
-      if (finished) {
-        return;
-      }
-
-      finished = true;
-      cleanup();
+      form.dataset.submitting = "false";
       setFormStatus(
         form,
         "The form did not get a response in time. Try again or email hello@bristolpipeband.org.",
         "is-error",
       );
-      submitButton?.removeAttribute("disabled");
     }, 12000);
-
-    targetFrame.addEventListener("load", handleLoad);
   });
 });
 
