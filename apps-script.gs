@@ -1,5 +1,5 @@
 const RECIPIENT_EMAIL = "aaron.george.smart@gmail.com";
-const SPREADSHEET_ID = "1Se4f4-P4N4gELwKRgur8HFAQ5wRimphUWzOTqyljF_0";
+const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1Q1S6Ab-GbNCqK74XxjIkwFB1sOJ3va6SlZNnEbBJRGQ/edit?gid=1546190981#gid=1546190981";
 const RATE_LIMIT_WINDOW_SECONDS = 120;
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -13,11 +13,11 @@ function doGet() {
 
 function doPost(e) {
   const data = e && e.parameter ? e.parameter : {};
-  const requestId = data.request_id || Utilities.getUuid();
+  const requestId = Utilities.getUuid();
   const kind = data.form_kind || "general";
 
   if (data.website) {
-    safeLogSubmissionAttempt_(kind, data, requestId, "spam_blocked", "");
+    safeAppendSubmission_(kind, data, requestId, "spam_blocked", "");
     return respond_(200, {
       ok: true,
       received: true,
@@ -28,7 +28,7 @@ function doPost(e) {
   const validationError = validateSubmission_(data);
 
   if (validationError) {
-    safeLogSubmissionAttempt_(kind, data, requestId, "validation_failed", validationError);
+    safeAppendSubmission_(kind, data, requestId, "validation_failed", validationError);
     return respond_(400, {
       ok: false,
       error: validationError,
@@ -37,7 +37,7 @@ function doPost(e) {
   }
 
   if (isRateLimited_(data)) {
-    safeLogSubmissionAttempt_(kind, data, requestId, "rate_limited", "");
+    safeAppendSubmission_(kind, data, requestId, "rate_limited", "");
     return respond_(429, {
       ok: false,
       error: "rate_limited",
@@ -45,34 +45,33 @@ function doPost(e) {
     });
   }
 
-  const logRef = safeLogSubmissionAttempt_(kind, data, requestId, "received", "");
-  const subject = buildSubject_(kind, data);
-  const body = buildBody_(kind, data, requestId);
-
   try {
     MailApp.sendEmail({
       to: RECIPIENT_EMAIL,
-      subject: subject,
-      body: body,
+      subject: buildSubject_(kind, data),
+      body: buildBody_(kind, data, requestId),
       replyTo: data.email || undefined,
     });
+
+    safeAppendSubmission_(kind, data, requestId, "emailed", "");
+
+    return respond_(200, {
+      ok: true,
+      received: true,
+      request_id: requestId,
+    });
   } catch (error) {
-    safeUpdateSubmissionStatus_(logRef, "email_failed", getErrorMessage_(error), requestId);
+    const message = getErrorMessage_(error);
+
+    safeAppendSubmission_(kind, data, requestId, "email_failed", message);
+    safeLogMessage_("doPost failed for request " + requestId + ": " + message);
 
     return respond_(500, {
       ok: false,
-      error: "email_failed",
+      error: "server_error",
       request_id: requestId,
     });
   }
-
-  safeUpdateSubmissionStatus_(logRef, "emailed", "", requestId);
-
-  return respond_(200, {
-    ok: true,
-    received: true,
-    request_id: requestId,
-  });
 }
 
 function validateSubmission_(data) {
@@ -113,23 +112,24 @@ function isRateLimited_(data) {
   return false;
 }
 
-function safeLogSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
+function safeAppendSubmission_(kind, data, requestId, status, errorMessage) {
   try {
-    return logSubmissionAttempt_(kind, data, requestId, status, errorMessage);
+    appendSubmission_(kind, data, requestId, status, errorMessage);
   } catch (error) {
-    console.error(
+    safeLogMessage_(
       "Logging failed during " + status + " for request " + requestId + ": " + getErrorMessage_(error),
     );
-    return null;
   }
 }
 
-function logSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
-  if (!SPREADSHEET_ID) {
-    return null;
+function appendSubmission_(kind, data, requestId, status, errorMessage) {
+  const spreadsheet = openSubmissionSpreadsheet_();
+
+  if (!spreadsheet) {
+    return;
   }
 
-  const sheet = getSubmissionSheet_();
+  const sheet = getSubmissionSheet_(spreadsheet);
 
   sheet.appendRow([
     new Date(),
@@ -150,41 +150,17 @@ function logSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
     data.submitted_at || "",
     data.message || "",
   ]);
-
-  return {
-    sheetId: sheet.getSheetId(),
-    row: sheet.getLastRow(),
-  };
 }
 
-function safeUpdateSubmissionStatus_(logRef, status, errorMessage, requestId) {
-  try {
-    updateSubmissionStatus_(logRef, status, errorMessage);
-  } catch (error) {
-    console.error(
-      "Status update failed during " + status + " for request " + requestId + ": " + getErrorMessage_(error),
-    );
+function openSubmissionSpreadsheet_() {
+  if (!SPREADSHEET_URL) {
+    return null;
   }
+
+  return SpreadsheetApp.openByUrl(SPREADSHEET_URL);
 }
 
-function updateSubmissionStatus_(logRef, status, errorMessage) {
-  if (!logRef) {
-    return;
-  }
-
-  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sheet = spreadsheet.getSheets().find((candidate) => candidate.getSheetId() === logRef.sheetId);
-
-  if (!sheet) {
-    return;
-  }
-
-  sheet.getRange(logRef.row, 3).setValue(status || "");
-  sheet.getRange(logRef.row, 4).setValue(errorMessage || "");
-}
-
-function getSubmissionSheet_() {
-  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+function getSubmissionSheet_(spreadsheet) {
   let sheet = spreadsheet.getSheetByName("Submissions");
 
   if (!sheet) {
@@ -222,6 +198,14 @@ function getErrorMessage_(error) {
   }
 
   return error && error.message ? String(error.message) : String(error);
+}
+
+function safeLogMessage_(message) {
+  try {
+    Logger.log(message);
+  } catch (_unused) {
+    // Logging must never fail the request.
+  }
 }
 
 function buildSubject_(kind, data) {
@@ -267,9 +251,14 @@ function buildBody_(kind, data, requestId) {
 }
 
 function respond_(status, payload) {
-  const body = JSON.stringify(Object.assign({
-    status: status,
-  }, payload || {}));
+  const body = JSON.stringify(
+    Object.assign(
+      {
+        status: status,
+      },
+      payload || {},
+    ),
+  );
 
   return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
 }
