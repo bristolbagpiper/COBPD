@@ -360,6 +360,10 @@ h2 {
   gap: 1rem;
 }
 
+.home-booking {
+  max-width: 48rem;
+}
+
 .aside-copy {
   padding-left: clamp(1.2rem, 3vw, 2.8rem);
   border-left: 1px solid var(--line);
