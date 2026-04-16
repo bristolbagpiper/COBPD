@@ -7,8 +7,8 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contactForms = document.querySelectorAll("[data-contact-form]");
 
 const FORM_ENDPOINTS = {
-  booking: "https://script.google.com/macros/s/AKfycbxppcnUGK9PMq1yIr5g3kEuYlriN990C3DeFu4pNd-sJTLqc14KbTqwecVOFhe4dKXwvw/exec",
-  joining: "https://script.google.com/macros/s/AKfycbxppcnUGK9PMq1yIr5g3kEuYlriN990C3DeFu4pNd-sJTLqc14KbTqwecVOFhe4dKXwvw/exec",
+  booking: "https://script.google.com/macros/s/AKfycbxKYfHEFpIVj2TpUlaqeNJShS6gND_XUshja4Jq-vBoVCoWMqUlSg4WT25ii6krvdH9Vw/exec",
+  joining: "https://script.google.com/macros/s/AKfycbxKYfHEFpIVj2TpUlaqeNJShS6gND_XUshja4Jq-vBoVCoWMqUlSg4WT25ii6krvdH9Vw/exec",
 };
 
 const syncHeader = () => {
