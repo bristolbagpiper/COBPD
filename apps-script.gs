@@ -1,15 +1,57 @@
-const RECIPIENT_EMAIL = "hello@bristolpipeband.org";
+const RECIPIENT_EMAIL = "aaron.george.smart@gmail.com";
+const SPREADSHEET_ID = "";
+const STATUS_TTL_SECONDS = 600;
+const RATE_LIMIT_WINDOW_SECONDS = 120;
+const MAX_MESSAGE_LENGTH = 4000;
 
 function doPost(e) {
   const data = e && e.parameter ? e.parameter : {};
+  const requestId = data.request_id || Utilities.getUuid();
 
   if (data.website) {
-    return ContentService.createTextOutput("ok");
+    storeStatus_(requestId, {
+      ok: true,
+      received: true,
+      kind: data.form_kind || "general",
+    });
+    return respond_(200, {
+      ok: true,
+      received: true,
+      request_id: requestId,
+    });
+  }
+
+  const validationError = validateSubmission_(data);
+
+  if (validationError) {
+    storeStatus_(requestId, {
+      ok: false,
+      error: validationError,
+      request_id: requestId,
+    });
+    return respond_(400, {
+      ok: false,
+      error: validationError,
+      request_id: requestId,
+    });
+  }
+
+  if (isRateLimited_(data)) {
+    storeStatus_(requestId, {
+      ok: false,
+      error: "rate_limited",
+      request_id: requestId,
+    });
+    return respond_(429, {
+      ok: false,
+      error: "rate_limited",
+      request_id: requestId,
+    });
   }
 
   const kind = data.form_kind || "general";
-  const subject = buildSubject(kind, data);
-  const body = buildBody(kind, data);
+  const subject = buildSubject_(kind, data);
+  const body = buildBody_(kind, data, requestId);
 
   MailApp.sendEmail({
     to: RECIPIENT_EMAIL,
@@ -18,10 +60,148 @@ function doPost(e) {
     replyTo: data.email || undefined,
   });
 
-  return ContentService.createTextOutput("ok");
+  appendSubmissionToSheet_(kind, data, requestId);
+
+  storeStatus_(requestId, {
+    ok: true,
+    received: true,
+    kind: kind,
+    request_id: requestId,
+  });
+
+  return respond_(200, {
+    ok: true,
+    received: true,
+    request_id: requestId,
+  });
 }
 
-function buildSubject(kind, data) {
+function doGet(e) {
+  const params = e && e.parameter ? e.parameter : {};
+  const action = params.action || "status";
+
+  if (action !== "status") {
+    return respond_(400, {
+      ok: false,
+      error: "unsupported_action",
+    }, params.callback);
+  }
+
+  const requestId = params.request_id || "";
+  const status = requestId ? readStatus_(requestId) : null;
+
+  return respond_(200, status || {
+    ok: true,
+    received: false,
+    request_id: requestId,
+  }, params.callback);
+}
+
+function validateSubmission_(data) {
+  if (!data.name || !data.email || !data.message) {
+    return "missing_required_fields";
+  }
+
+  if (!/@/.test(data.email)) {
+    return "invalid_email";
+  }
+
+  if (String(data.message).length > MAX_MESSAGE_LENGTH) {
+    return "message_too_long";
+  }
+
+  if (data.form_kind === "booking" && !data.booking_type) {
+    return "missing_required_fields";
+  }
+
+  if (data.form_kind === "joining" && (!data.interest || !data.experience_level)) {
+    return "missing_required_fields";
+  }
+
+  return "";
+}
+
+function isRateLimited_(data) {
+  const email = String(data.email || "").trim().toLowerCase();
+  const kind = String(data.form_kind || "general").trim().toLowerCase();
+  const key = "limit:" + kind + ":" + email;
+  const cache = CacheService.getScriptCache();
+
+  if (cache.get(key)) {
+    return true;
+  }
+
+  cache.put(key, "1", RATE_LIMIT_WINDOW_SECONDS);
+  return false;
+}
+
+function storeStatus_(requestId, payload) {
+  if (!requestId) {
+    return;
+  }
+
+  CacheService.getScriptCache().put(
+    "status:" + requestId,
+    JSON.stringify(payload),
+    STATUS_TTL_SECONDS,
+  );
+}
+
+function readStatus_(requestId) {
+  const raw = CacheService.getScriptCache().get("status:" + requestId);
+  return raw ? JSON.parse(raw) : null;
+}
+
+function appendSubmissionToSheet_(kind, data, requestId) {
+  if (!SPREADSHEET_ID) {
+    return;
+  }
+
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName("Submissions");
+
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet("Submissions");
+  }
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      "Timestamp",
+      "Request ID",
+      "Form type",
+      "Name",
+      "Email",
+      "Phone",
+      "Booking type",
+      "Event date",
+      "Location",
+      "Interest",
+      "Experience level",
+      "Age group",
+      "Page",
+      "Message",
+    ]);
+  }
+
+  sheet.appendRow([
+    new Date(),
+    requestId,
+    kind,
+    data.name || "",
+    data.email || "",
+    data.phone || "",
+    data.booking_type || "",
+    data.event_date || "",
+    data.location || "",
+    data.interest || "",
+    data.experience_level || "",
+    data.age_group || "",
+    data.page || "",
+    data.message || "",
+  ]);
+}
+
+function buildSubject_(kind, data) {
   if (kind === "booking") {
     return "Website booking enquiry: " + (data.name || "Unknown sender");
   }
@@ -33,8 +213,9 @@ function buildSubject(kind, data) {
   return "Website enquiry";
 }
 
-function buildBody(kind, data) {
+function buildBody_(kind, data, requestId) {
   const lines = [
+    "Request ID: " + requestId,
     "Form type: " + (kind || ""),
     "Name: " + (data.name || ""),
     "Email: " + (data.email || ""),
@@ -60,4 +241,18 @@ function buildBody(kind, data) {
   lines.push(data.message || "");
 
   return lines.join("\n");
+}
+
+function respond_(status, payload, callback) {
+  const body = JSON.stringify(Object.assign({
+    status: status,
+  }, payload || {}));
+
+  if (callback) {
+    return ContentService.createTextOutput(
+      callback + "(" + body + ");"
+    ).setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
 }
