@@ -249,6 +249,30 @@ button {
   padding-bottom: clamp(5.2rem, 8vw, 7rem);
 }
 
+.page-hero--about .page-hero__content {
+  padding-left: clamp(2rem, 6vw, 5.5rem);
+}
+
+.page-hero--book .page-hero__content {
+  padding-left: clamp(2rem, 6vw, 5.5rem);
+}
+
+.page-hero--join .page-hero__content {
+  padding-left: clamp(2rem, 6vw, 5.5rem);
+}
+
+.page-hero--events .page-hero__content {
+  padding-left: clamp(2rem, 6vw, 5.5rem);
+}
+
+.page-hero--faq .page-hero__content {
+  padding-left: clamp(2rem, 6vw, 5.5rem);
+}
+
+.page-hero--contact .page-hero__content {
+  padding-left: clamp(2rem, 6vw, 5.5rem);
+}
+
 .page-hero--home .page-hero__content > * {
   max-width: 44rem;
 }
@@ -824,6 +848,30 @@ body.has-motion .reveal.is-visible {
   }
 
   .page-hero--home .page-hero__content {
+    padding-left: 0;
+  }
+
+  .page-hero--about .page-hero__content {
+    padding-left: 0;
+  }
+
+  .page-hero--book .page-hero__content {
+    padding-left: 0;
+  }
+
+  .page-hero--join .page-hero__content {
+    padding-left: 0;
+  }
+
+  .page-hero--events .page-hero__content {
+    padding-left: 0;
+  }
+
+  .page-hero--faq .page-hero__content {
+    padding-left: 0;
+  }
+
+  .page-hero--contact .page-hero__content {
     padding-left: 0;
   }
 
