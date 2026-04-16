@@ -6,8 +6,10 @@ const MAX_MESSAGE_LENGTH = 4000;
 function doPost(e) {
   const data = e && e.parameter ? e.parameter : {};
   const requestId = data.request_id || Utilities.getUuid();
+  const kind = data.form_kind || "general";
 
   if (data.website) {
+    logSubmissionAttempt_(kind, data, requestId, "spam_blocked", "");
     return respond_(200, {
       ok: true,
       received: true,
@@ -18,6 +20,7 @@ function doPost(e) {
   const validationError = validateSubmission_(data);
 
   if (validationError) {
+    logSubmissionAttempt_(kind, data, requestId, "validation_failed", validationError);
     return respond_(400, {
       ok: false,
       error: validationError,
@@ -26,6 +29,7 @@ function doPost(e) {
   }
 
   if (isRateLimited_(data)) {
+    logSubmissionAttempt_(kind, data, requestId, "rate_limited", "");
     return respond_(429, {
       ok: false,
       error: "rate_limited",
@@ -33,18 +37,28 @@ function doPost(e) {
     });
   }
 
-  const kind = data.form_kind || "general";
+  const logRef = logSubmissionAttempt_(kind, data, requestId, "received", "");
   const subject = buildSubject_(kind, data);
   const body = buildBody_(kind, data, requestId);
 
-  MailApp.sendEmail({
-    to: RECIPIENT_EMAIL,
-    subject: subject,
-    body: body,
-    replyTo: data.email || undefined,
-  });
+  try {
+    MailApp.sendEmail({
+      to: RECIPIENT_EMAIL,
+      subject: subject,
+      body: body,
+      replyTo: data.email || undefined,
+    });
+  } catch (error) {
+    updateSubmissionStatus_(logRef, "email_failed", getErrorMessage_(error));
 
-  appendSubmissionToSheet_(kind, data, requestId);
+    return respond_(500, {
+      ok: false,
+      error: "email_failed",
+      request_id: requestId,
+    });
+  }
+
+  updateSubmissionStatus_(logRef, "emailed", "");
 
   return respond_(200, {
     ok: true,
@@ -91,40 +105,18 @@ function isRateLimited_(data) {
   return false;
 }
 
-function appendSubmissionToSheet_(kind, data, requestId) {
+function logSubmissionAttempt_(kind, data, requestId, status, errorMessage) {
   if (!SPREADSHEET_ID) {
-    return;
+    return null;
   }
 
-  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-  let sheet = spreadsheet.getSheetByName("Submissions");
-
-  if (!sheet) {
-    sheet = spreadsheet.insertSheet("Submissions");
-  }
-
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      "Timestamp",
-      "Request ID",
-      "Form type",
-      "Name",
-      "Email",
-      "Phone",
-      "Booking type",
-      "Event date",
-      "Location",
-      "Interest",
-      "Experience level",
-      "Age group",
-      "Page",
-      "Message",
-    ]);
-  }
+  const sheet = getSubmissionSheet_();
 
   sheet.appendRow([
     new Date(),
     requestId,
+    status || "",
+    errorMessage || "",
     kind,
     data.name || "",
     data.email || "",
@@ -136,8 +128,71 @@ function appendSubmissionToSheet_(kind, data, requestId) {
     data.experience_level || "",
     data.age_group || "",
     data.page || "",
+    data.submitted_at || "",
     data.message || "",
   ]);
+
+  return {
+    sheetId: sheet.getSheetId(),
+    row: sheet.getLastRow(),
+  };
+}
+
+function updateSubmissionStatus_(logRef, status, errorMessage) {
+  if (!logRef) {
+    return;
+  }
+
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = spreadsheet.getSheets().find((candidate) => candidate.getSheetId() === logRef.sheetId);
+
+  if (!sheet) {
+    return;
+  }
+
+  sheet.getRange(logRef.row, 3).setValue(status || "");
+  sheet.getRange(logRef.row, 4).setValue(errorMessage || "");
+}
+
+function getSubmissionSheet_() {
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName("Submissions");
+
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet("Submissions");
+  }
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      "Received at",
+      "Request ID",
+      "Status",
+      "Error",
+      "Form type",
+      "Name",
+      "Email",
+      "Phone",
+      "Booking type",
+      "Event date",
+      "Location",
+      "Interest",
+      "Experience level",
+      "Age group",
+      "Page",
+      "Submitted at",
+      "Message",
+    ]);
+  }
+
+  return sheet;
+}
+
+function getErrorMessage_(error) {
+  if (!error) {
+    return "";
+  }
+
+  return error && error.message ? String(error.message) : String(error);
 }
 
 function buildSubject_(kind, data) {

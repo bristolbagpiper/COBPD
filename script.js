@@ -6,6 +6,11 @@ const revealTargets = document.querySelectorAll(".reveal");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contactForms = document.querySelectorAll("[data-contact-form]");
 
+const FORM_ENDPOINTS = {
+  booking: "https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec",
+  joining: "https://script.google.com/macros/s/AKfycbxHJ5jf5onAW02-Ofe2EJkHVebKjw2jYX2Wwb4rq4i7wCtq46CI7sYG960vyiimGCjpMw/exec",
+};
+
 const syncHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 24);
 };
@@ -94,45 +99,26 @@ const setFormSuccessState = (form, isSuccess) => {
 
 contactForms.forEach((form) => {
   const resetButton = form.querySelector("[data-form-reset]");
-  const targetName = form.getAttribute("target") || "";
-  const targetFrame = targetName ? document.getElementsByName(targetName)[0] : null;
-  let submitTimeoutId = 0;
 
   resetButton?.addEventListener("click", () => {
-    window.clearTimeout(submitTimeoutId);
-    form.dataset.submitting = "false";
     form.reset();
     setFormStatus(form, "");
     setFormSuccessState(form, false);
   });
 
-  if (targetFrame) {
-    targetFrame.addEventListener("load", () => {
-      if (form.dataset.submitting !== "true") {
-        return;
-      }
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-      window.clearTimeout(submitTimeoutId);
-      form.dataset.submitting = "false";
-      form.reset();
-      setFormStatus(form, "");
-      setFormSuccessState(form, true);
-    });
-  }
-
-  form.addEventListener("submit", (event) => {
     if (!form.reportValidity()) {
-      event.preventDefault();
       return;
     }
 
-    const endpoint = form.getAttribute("action") || "";
-    const pageField = form.querySelector("[data-page-field]");
-    const submittedAtField = form.querySelector("[data-submitted-at]");
+    const kind = form.getAttribute("data-contact-form") || "";
+    const endpoint = FORM_ENDPOINTS[kind] || "";
+    const submitButton = form.querySelector('button[type="submit"]');
     const honeypot = form.querySelector('input[name="website"]');
 
     if (honeypot?.value) {
-      event.preventDefault();
       form.reset();
       setFormStatus(form, "");
       setFormSuccessState(form, true);
@@ -140,49 +126,44 @@ contactForms.forEach((form) => {
     }
 
     if (!endpoint) {
-      event.preventDefault();
       setFormStatus(
         form,
-        "This form is not wired yet. Add the Google Apps Script URL to the form action or email hello@bristolpipeband.org.",
+        "This form is not wired yet. Add the Google Apps Script URL in script.js or email hello@bristolpipeband.org.",
         "is-error",
       );
       return;
     }
 
-    if (pageField) {
-      pageField.value = window.location.pathname;
-    }
+    const formData = new FormData(form);
+    formData.append("form_kind", kind || "general");
+    formData.append("page", window.location.pathname);
+    formData.append("submitted_at", new Date().toISOString());
 
-    if (submittedAtField) {
-      submittedAtField.value = new Date().toISOString();
-    }
-
+    submitButton?.setAttribute("disabled", "true");
     setFormStatus(form, "Sending...");
 
-    if (!targetFrame) {
-      event.preventDefault();
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: new URLSearchParams(formData).toString(),
+      });
+
+      form.reset();
+      setFormStatus(form, "");
+      setFormSuccessState(form, true);
+    } catch {
       setFormStatus(
         form,
-        "This form has no submission target. Add the hidden iframe target or email hello@bristolpipeband.org.",
+        "There was a problem sending the form. Please try again or email hello@bristolpipeband.org.",
         "is-error",
       );
-      return;
+    } finally {
+      submitButton?.removeAttribute("disabled");
     }
-
-    form.dataset.submitting = "true";
-    window.clearTimeout(submitTimeoutId);
-    submitTimeoutId = window.setTimeout(() => {
-      if (form.dataset.submitting !== "true") {
-        return;
-      }
-
-      form.dataset.submitting = "false";
-      setFormStatus(
-        form,
-        "The form did not get a response in time. Try again or email hello@bristolpipeband.org.",
-        "is-error",
-      );
-    }, 12000);
   });
 });
 
