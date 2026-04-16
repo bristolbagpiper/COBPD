@@ -101,10 +101,9 @@ contactForms.forEach((form) => {
     setFormSuccessState(form, false);
   });
 
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
+  form.addEventListener("submit", (event) => {
     if (!form.reportValidity()) {
+      event.preventDefault();
       return;
     }
 
@@ -117,6 +116,7 @@ contactForms.forEach((form) => {
     const honeypot = form.querySelector('input[name="website"]');
 
     if (honeypot?.value) {
+      event.preventDefault();
       form.reset();
       setFormStatus(form, "");
       setFormSuccessState(form, true);
@@ -124,6 +124,7 @@ contactForms.forEach((form) => {
     }
 
     if (!endpoint) {
+      event.preventDefault();
       setFormStatus(
         form,
         "This form is not wired yet. Add the Google Apps Script URL to the form action or email hello@bristolpipeband.org.",
@@ -144,6 +145,7 @@ contactForms.forEach((form) => {
     setFormStatus(form, "Sending...");
 
     if (!targetFrame) {
+      event.preventDefault();
       setFormStatus(
         form,
         "This form has no submission target. Add the hidden iframe target or email hello@bristolpipeband.org.",
@@ -190,7 +192,6 @@ contactForms.forEach((form) => {
     }, 12000);
 
     targetFrame.addEventListener("load", handleLoad);
-    form.submit();
   });
 });
 
