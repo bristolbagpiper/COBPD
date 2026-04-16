@@ -756,6 +756,11 @@ h2 {
   padding: clamp(0.25rem, 1vw, 0.5rem) 0;
 }
 
+.form-success[hidden],
+[data-form-content][hidden] {
+  display: none !important;
+}
+
 .form-success h3 {
   margin: 0;
   font-family: var(--font-display);
