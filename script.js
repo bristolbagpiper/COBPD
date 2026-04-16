@@ -251,6 +251,9 @@ const normaliseGigRecord = (record) => {
   const name = record.name || "";
   const location = record.location || "";
   const date = parseUkDate(record.date);
+  const publicFlag = String(record.public || record.is_public || "")
+    .trim()
+    .toUpperCase();
 
   if (!name || !date) {
     return null;
@@ -261,6 +264,7 @@ const normaliseGigRecord = (record) => {
     location: location || "Location TBC",
     date,
     time: normaliseTime(record.time),
+    isPublic: publicFlag !== "N",
     sortMinutes: parseStartMinutes(record.time),
   };
 };
@@ -455,6 +459,7 @@ const loadGigsFromCsv = async () => {
 
     const today = getToday();
     const upcomingGigs = gigs.filter((gig) => gig.date >= today);
+    const nextPublicGig = upcomingGigs.find((gig) => gig.isPublic) || null;
     const completedGigs = gigs
       .filter(
         (gig) =>
@@ -462,7 +467,7 @@ const loadGigsFromCsv = async () => {
       )
       .sort((firstGig, secondGig) => secondGig.date.getTime() - firstGig.date.getTime());
 
-    updateNextGigBanner(upcomingGigs[0] || null);
+    updateNextGigBanner(nextPublicGig);
     renderUpcomingSchedule(upcomingGigs);
     renderLiveLegacy(completedGigs);
   } catch {
