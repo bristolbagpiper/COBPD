@@ -62,87 +62,323 @@
         <div class="page-hero__veil"></div>
         <div class="page-hero__content shell">
           <p class="eyebrow">Events</p>
-          <h1>Previous events</h1>
-          <p class="page-hero__lede">Examples of band events over the past couple of years.</p>
+          <h1>Upcoming gigs and a legacy archive that are actually easy to scan.</h1>
+          <p class="page-hero__lede">
+            See what is booked next, then browse the archive of appearances from recent years
+            without digging through a wall of bullet points.
+          </p>
           <div class="cta-row page-hero__actions">
             <a class="button button--solid" href="book-us.html">Book us</a>
+            <a class="button button--ghost" href="#upcoming-gigs">Upcoming gigs</a>
+          </div>
+          <div class="events-hero__summary" aria-live="polite">
+            <p class="events-hero__kicker">Next appearance</p>
+            <div class="events-hero__summary-body">
+              <p class="events-hero__summary-title" data-next-gig-name>Army Veteran Reunion</p>
+              <p class="events-hero__summary-meta">
+                <span data-next-gig-date>Saturday 18 April 2026</span>
+                <span data-next-gig-location>Bristol</span>
+                <span data-next-gig-time>14:30 - 19:00</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--paper reveal" id="upcoming-gigs">
+        <div class="shell events-shell">
+          <div class="events-section-heading">
+            <p class="eyebrow">Upcoming gigs</p>
+            <h2>A simple running schedule, updated from the latest gigs file.</h2>
+            <p class="events-section-copy">
+              The list below is driven by <code>gigs.csv</code>, so adding or changing dates there
+              updates this section automatically.
+            </p>
+          </div>
+
+          <div class="events-schedule" data-upcoming-schedule>
+            <article class="schedule-group">
+              <div class="schedule-group__label">
+                <h3 class="schedule-group__month">April 2026</h3>
+                <p class="schedule-group__count">1 appearance</p>
+              </div>
+              <div class="schedule-list">
+                <article class="schedule-item schedule-item--next">
+                  <div class="schedule-date" aria-hidden="true">
+                    <span class="schedule-date__day">18</span>
+                    <span class="schedule-date__month">Apr</span>
+                    <span class="schedule-date__weekday">Sat</span>
+                  </div>
+                  <div class="schedule-main">
+                    <div class="schedule-main__top">
+                      <p class="schedule-title">Army Veteran Reunion</p>
+                      <span class="schedule-badge">Next up</span>
+                    </div>
+                    <p class="schedule-meta">
+                      <span>Bristol</span>
+                      <span>Saturday 18 April 2026</span>
+                    </p>
+                  </div>
+                  <p class="schedule-time">14:30 - 19:00</p>
+                </article>
+              </div>
+            </article>
+
+            <article class="schedule-group">
+              <div class="schedule-group__label">
+                <h3 class="schedule-group__month">May 2026</h3>
+                <p class="schedule-group__count">2 appearances</p>
+              </div>
+              <div class="schedule-list">
+                <article class="schedule-item">
+                  <div class="schedule-date" aria-hidden="true">
+                    <span class="schedule-date__day">4</span>
+                    <span class="schedule-date__month">May</span>
+                    <span class="schedule-date__weekday">Mon</span>
+                  </div>
+                  <div class="schedule-main">
+                    <div class="schedule-main__top">
+                      <p class="schedule-title">Winterbourne Carnival</p>
+                    </div>
+                    <p class="schedule-meta">
+                      <span>Winterbourne, Bristol</span>
+                      <span>Monday 4 May 2026</span>
+                    </p>
+                  </div>
+                  <p class="schedule-time">09:30 - 11:00</p>
+                </article>
+
+                <article class="schedule-item">
+                  <div class="schedule-date" aria-hidden="true">
+                    <span class="schedule-date__day">4</span>
+                    <span class="schedule-date__month">May</span>
+                    <span class="schedule-date__weekday">Mon</span>
+                  </div>
+                  <div class="schedule-main">
+                    <div class="schedule-main__top">
+                      <p class="schedule-title">Ashton Court Farewell</p>
+                    </div>
+                    <p class="schedule-meta">
+                      <span>Ashton Court, Bristol</span>
+                      <span>Monday 4 May 2026</span>
+                    </p>
+                  </div>
+                  <p class="schedule-time">15:30 - 18:00</p>
+                </article>
+              </div>
+            </article>
+
+            <article class="schedule-group">
+              <div class="schedule-group__label">
+                <h3 class="schedule-group__month">June 2026</h3>
+                <p class="schedule-group__count">1 appearance</p>
+              </div>
+              <div class="schedule-list">
+                <article class="schedule-item">
+                  <div class="schedule-date" aria-hidden="true">
+                    <span class="schedule-date__day">6</span>
+                    <span class="schedule-date__month">Jun</span>
+                    <span class="schedule-date__weekday">Sat</span>
+                  </div>
+                  <div class="schedule-main">
+                    <div class="schedule-main__top">
+                      <p class="schedule-title">Pill Rag</p>
+                    </div>
+                    <p class="schedule-meta">
+                      <span>Pill, Somerset</span>
+                      <span>Saturday 6 June 2026</span>
+                    </p>
+                  </div>
+                  <p class="schedule-time">16:45 - 19:30</p>
+                </article>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--sand reveal" id="legacy">
+        <div class="shell events-shell">
+          <div class="events-section-heading">
+            <p class="eyebrow">Legacy archive</p>
+            <h2>Earlier years stay available here, separated from the live schedule.</h2>
+            <p class="events-section-copy">
+              Past gigs from the current season can be added automatically above this archive once
+              they have happened. Older years remain a hand-kept record.
+            </p>
+          </div>
+
+          <div class="legacy-live" data-live-legacy hidden></div>
+
+          <div class="legacy-grid">
+            <article class="legacy-year">
+              <div class="legacy-year__header">
+                <h3>2025</h3>
+                <p class="legacy-year__count">9 appearances</p>
+              </div>
+              <div class="legacy-year__entries">
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Bemmy Winter Lantern Parade</p>
+                  <p class="legacy-entry__location">Bedminster, Bristol</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Winterbourne Carnival</p>
+                  <p class="legacy-entry__location">Winterbourne, South Gloucestershire</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Pill Rag</p>
+                  <p class="legacy-entry__location">Pill, Bristol</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Portishead Carnival</p>
+                  <p class="legacy-entry__location">Portishead, North Somerset</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">CoBPD Summer Party</p>
+                  <p class="legacy-entry__location">Bristol</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Chudleigh Town Carnival</p>
+                  <p class="legacy-entry__location">Chudleigh, Devon</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Bristol Balloon Fiesta</p>
+                  <p class="legacy-entry__location">Bristol</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Bideford Festival of Piping and Drumming</p>
+                  <p class="legacy-entry__location">Bideford, Devon</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Remembrance Sunday</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="legacy-year">
+              <div class="legacy-year__header">
+                <h3>2024</h3>
+                <p class="legacy-year__count">8 appearances</p>
+              </div>
+              <div class="legacy-year__entries">
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">St Patrick&rsquo;s Day Parade</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Winterbourne Carnival</p>
+                  <p class="legacy-entry__location">Winterbourne, South Gloucestershire</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">CoBPD 25th Anniversary</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Sainte Annes Festival</p>
+                  <p class="legacy-entry__location">Bricquebec, France</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Clevedon Flower Show</p>
+                  <p class="legacy-entry__location">Clevedon, North Somerset</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Bideford Festival of Piping and Drumming</p>
+                  <p class="legacy-entry__location">Bideford, Devon</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Castle Cary Carnival</p>
+                  <p class="legacy-entry__location">Castle Cary, Somerset</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Remembrance Sunday</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="legacy-year">
+              <div class="legacy-year__header">
+                <h3>2023</h3>
+                <p class="legacy-year__count">8 appearances</p>
+              </div>
+              <div class="legacy-year__entries">
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">St Patrick&rsquo;s Day Parade</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Winterbourne Carnival</p>
+                  <p class="legacy-entry__location">Winterbourne, South Gloucestershire</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Coronation Evening Song at Bristol Cathedral</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Proms in the Meadow</p>
+                  <p class="legacy-entry__location">Iron Acton, South Gloucestershire</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Clevedon Flower Show</p>
+                  <p class="legacy-entry__location">Clevedon, North Somerset</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Bideford Festival of Piping and Drumming</p>
+                  <p class="legacy-entry__location">Bideford, Devon</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Castle Cary Carnival</p>
+                  <p class="legacy-entry__location">Castle Cary, Somerset</p>
+                </div>
+                <div class="legacy-entry">
+                  <p class="legacy-entry__name">Remembrance Sunday</p>
+                  <p class="legacy-entry__location">Bristol City Centre</p>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
 
       <section class="section section--paper reveal">
-        <div class="shell year-columns">
-          <article class="year-block">
-            <h2>2025</h2>
-            <ul class="year-list">
-              <li>Bemmy winter lantern parade, Bedminster, Bristol</li>
-              <li>Winterbourne carnival, Winterbourne, South Gloucestershire</li>
-              <li>Pill Rag, Pill, Bristol</li>
-              <li>Portishead carnival, Portishead, North Somerset</li>
-              <li>CoBPD summer party, Bristol</li>
-              <li>Chudliegh town carnival, Chudleigh, Devon</li>
-              <li>Bristol Balloon Fiesta, Bristol</li>
-              <li>Bideford Festival of Piping and Drumming, Bideford, Devon</li>
-              <li>Remembrance Sunday, Bristol City centre</li>
-            </ul>
-          </article>
+        <div class="shell events-shell">
+          <div class="events-section-heading">
+            <p class="eyebrow">On the road</p>
+            <h2>Recent moments from band appearances.</h2>
+          </div>
 
-          <article class="year-block">
-            <h2>2024</h2>
-            <ul class="year-list">
-              <li>St Partrick day parade, Bristol City centre</li>
-              <li>Winterbourne carnival, Winterbourne, South Gloucestershire</li>
-              <li>CoBPD 25th anniversary, Bristol City centre</li>
-              <li>Sainte Annes Festival, Bricquebec, France</li>
-              <li>Clevedon Flower Show, Clevedon, North Somerset</li>
-              <li>Bideford Festival of Piping and Drumming, Bideford, Devon</li>
-              <li>Castle Cary Carnival, Castle Cary, Somerset</li>
-              <li>Remembrance Sunday, Bristol City centre</li>
-            </ul>
-          </article>
+          <div class="photo-grid photo-grid--events">
+            <figure class="media-frame media-frame--landscape media-frame--soft photo-grid__wide">
+              <img
+                src="assets/images/live/live-06.jpg"
+                alt="The band gathered together outdoors at a festival"
+              />
+            </figure>
+            <figure class="media-frame media-frame--square media-frame--soft">
+              <img
+                src="assets/images/live/live-09.jpg"
+                alt="Pipe band members performing in a town square"
+              />
+            </figure>
+            <figure class="media-frame media-frame--square media-frame--soft">
+              <img
+                src="assets/images/live/live-10.jpg"
+                alt="The band marching through a large public event"
+              />
+            </figure>
+            <figure class="media-frame media-frame--landscape media-frame--soft photo-grid__wide">
+              <img
+                src="assets/images/live/live-20.jpg"
+                alt="The drum major leading the band along a road lined with spectators"
+              />
+            </figure>
+          </div>
 
-          <article class="year-block">
-            <h2>2023</h2>
-            <ul class="year-list">
-              <li>St Partrick day parade, Bristol City centre</li>
-              <li>Winterbourne Carvival, Winterbourne, South Gloucestershire</li>
-              <li>Coronation - Eveningsong at Bristol Cathedral, Bristol City centre</li>
-              <li>Iron Acton - Proms in the Meadow, Iron Acton, South Gloucestershire</li>
-              <li>Clevedon Flower Show, Clevedon, North Somerset</li>
-              <li>Bideford Festival of Piping and drumming, Bideford, Devon</li>
-              <li>Castle Cary Carnival, Castle Cary, Somerset</li>
-              <li>Remembrance Sunday, Bristol City centre</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="section section--sand reveal">
-        <div class="shell photo-grid photo-grid--events">
-          <figure class="media-frame media-frame--landscape media-frame--soft photo-grid__wide">
-            <img
-              src="assets/images/live/live-06.jpg"
-              alt="The band gathered together outdoors at a festival"
-            />
-          </figure>
-          <figure class="media-frame media-frame--square media-frame--soft">
-            <img
-              src="assets/images/live/live-09.jpg"
-              alt="Pipe band members performing in a town square"
-            />
-          </figure>
-          <figure class="media-frame media-frame--square media-frame--soft">
-            <img
-              src="assets/images/live/live-10.jpg"
-              alt="The band marching through a large public event"
-            />
-          </figure>
-          <figure class="media-frame media-frame--landscape media-frame--soft photo-grid__wide">
-            <img
-              src="assets/images/live/live-20.jpg"
-              alt="The drum major leading the band along a road lined with spectators"
-            />
-          </figure>
+          <div class="cta-row">
+            <a class="button button--solid" href="book-us.html">Book us</a>
+            <a class="button button--ghost-dark" href="join-the-band.html">Join the band</a>
+          </div>
         </div>
       </section>
     </main>
@@ -197,6 +433,6 @@
       </div>
     </footer>
 
-    <script src="script.js?v=20260416-1912"></script>
+    <script src="script.js?v=20260416-2035"></script>
   </body>
 </html>
