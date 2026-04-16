@@ -11,7 +11,7 @@
   --line: rgba(35, 49, 54, 0.14);
   --shadow: 0 24px 60px rgba(34, 37, 26, 0.14);
   --font-body: "Merriweather Sans", sans-serif;
-  --font-display: "Source Sans 3", sans-serif;
+  --font-display: "Alegreya", serif;
   --shell: min(100% - 2.4rem, 1320px);
   --nav-height: 5rem;
 }
@@ -129,7 +129,7 @@ button {
   font-size: clamp(1.35rem, 1rem + 1vw, 2.1rem);
   line-height: 0.98;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
 }
 
 .brand__sub {
@@ -245,8 +245,8 @@ h2 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: 0.94;
-  letter-spacing: -0.015em;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
 }
 
 h1 {
