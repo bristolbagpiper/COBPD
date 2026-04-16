@@ -915,6 +915,10 @@ h2 {
   align-items: start;
 }
 
+.members-auth[hidden] {
+  display: none !important;
+}
+
 .members-auth__intro,
 .members-app {
   display: grid;
@@ -959,6 +963,13 @@ h2 {
 .members-status,
 .members-empty {
   margin: 0;
+}
+
+.members-empty {
+  padding: 1rem 1.1rem;
+  border: 1px dashed rgba(4, 6, 31, 0.14);
+  border-radius: 1rem;
+  background: rgba(4, 6, 31, 0.02);
 }
 
 .members-gigs {

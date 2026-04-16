@@ -704,7 +704,7 @@ const formatMemberDate = (value) => {
 };
 
 const getMembersRoleLabel = (member) =>
-  [member.instrument, member.section].filter(Boolean).join(" · ");
+  [member.instrument, member.role, member.section].filter(Boolean).join(" · ");
 
 const getResponseTagClass = (answer) => {
   if (answer === "yes") {
@@ -756,7 +756,10 @@ const renderRosterMember = (member) => {
     member.answer === "maybe" && member.reason
       ? `<p class="members-roster-member__meta">${escapeHtml(member.reason)}</p>`
       : "";
-  const metaBits = answeredAt ? `Updated ${answeredAt}` : "";
+  const metaBits = [member.role]
+    .concat(answeredAt ? [`Updated ${answeredAt}`] : [])
+    .filter(Boolean)
+    .join(" · ");
 
   return `
     <article class="members-roster-member">
@@ -910,7 +913,7 @@ const renderMembersDashboard = (payload) => {
     membersEmpty.hidden = gigs.length > 0;
     membersEmpty.textContent = gigs.length
       ? ""
-      : "No member gigs are currently available.";
+      : "No member gigs are currently available. This dashboard reads from the 'Member Gigs' sheet, not public gigs.csv.";
   }
 
   if (membersGigs) {

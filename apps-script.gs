@@ -352,6 +352,7 @@ function buildGigDashboardItem_(gig, sessionMember, members, responseMap) {
       name: member.name,
       section: member.section,
       instrument: member.instrument,
+      role: member.role,
       answer: response ? response.answer : "no_reply",
       reason: response ? response.reason : "",
       answered_at: response ? response.answered_at : "",
@@ -494,6 +495,7 @@ function toMemberView_(entry) {
     email: normalizeEmail_(record.email || ""),
     section: String(record.section || "").trim(),
     instrument: String(record.instrument || "").trim(),
+    role: String(record.role || "").trim(),
   };
 }
 
@@ -860,6 +862,7 @@ function getMembersSheet_(spreadsheet) {
     "Email",
     "Section",
     "Instrument",
+    "Role",
     "Password",
     "Password Hash",
     "Active",

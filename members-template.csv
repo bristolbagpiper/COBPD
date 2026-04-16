@@ -1,2 +1,2 @@
-Member ID,Name,Email,Section,Instrument,Password,Active
-member_001,Sample Piper,sample.piper@example.com,Pipes,Bagpipes,ChangeMe123,Y
+Member ID,Name,Email,Section,Instrument,Role,Password,Active
+member_001,Sample Piper,sample.piper@example.com,Pipes,Bagpipes,Player,ChangeMe123,Y

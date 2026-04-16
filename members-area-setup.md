@@ -22,6 +22,7 @@ Recommended columns:
 - `Email`
 - `Section`
 - `Instrument`
+- `Role`
 - `Password`
 - `Active`
 
