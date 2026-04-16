@@ -213,6 +213,12 @@ button {
     linear-gradient(90deg, rgba(4, 6, 31, 0.72) 0%, rgba(15, 125, 89, 0.16) 55%, rgba(23, 127, 156, 0.12) 100%);
 }
 
+.page-hero--home .page-hero__veil {
+  background:
+    linear-gradient(180deg, rgba(4, 6, 31, 0.08) 0%, rgba(4, 6, 31, 0.24) 34%, rgba(4, 6, 31, 0.72) 100%),
+    linear-gradient(90deg, rgba(4, 6, 31, 0.84) 0%, rgba(4, 6, 31, 0.68) 18%, rgba(4, 6, 31, 0.34) 40%, rgba(15, 125, 89, 0.12) 64%, rgba(23, 127, 156, 0.08) 100%);
+}
+
 .page-hero__content {
   position: relative;
   z-index: 1;
@@ -226,6 +232,14 @@ button {
 
 .page-hero__content > * {
   max-width: 42rem;
+}
+
+.page-hero--home .page-hero__content {
+  padding-left: clamp(0rem, 2.4vw, 2.25rem);
+}
+
+.page-hero--home .page-hero__content > * {
+  max-width: 38rem;
 }
 
 .eyebrow {
@@ -722,6 +736,10 @@ body.has-motion .reveal.is-visible {
 
   .page-hero__content {
     padding: 3.2rem 0 2.6rem;
+  }
+
+  .page-hero--home .page-hero__content {
+    padding-left: 0;
   }
 
   .cta-row {
