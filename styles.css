@@ -10,7 +10,7 @@
   --accent-deep: #8f3a2e;
   --line: rgba(35, 49, 54, 0.14);
   --shadow: 0 24px 60px rgba(34, 37, 26, 0.14);
-  --font-body: "Fira Sans", sans-serif;
+  --font-body: "Merriweather Sans", sans-serif;
   --font-display: "Fira Sans Condensed", sans-serif;
   --shell: min(100% - 2.4rem, 1320px);
   --nav-height: 5rem;
@@ -33,7 +33,7 @@ body {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
     linear-gradient(135deg, #fff7ec, #f4e4cd 56%, #f9f4ea);
-  line-height: 1.5;
+  line-height: 1.58;
 }
 
 img {
@@ -265,7 +265,7 @@ h2 {
 .year-list li,
 .faq-item p,
 .contact-panel p {
-  font-size: clamp(1.04rem, 0.96rem + 0.24vw, 1.2rem);
+  font-size: clamp(1rem, 0.94rem + 0.18vw, 1.1rem);
 }
 
 .page-hero__lede {
