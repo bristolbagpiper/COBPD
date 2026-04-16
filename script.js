@@ -99,9 +99,12 @@ const setFormSuccessState = (form, isSuccess) => {
 
 contactForms.forEach((form) => {
   const resetButton = form.querySelector("[data-form-reset]");
+  const submitButton = form.querySelector('button[type="submit"]');
+  const defaultButtonLabel = submitButton?.dataset.label || submitButton?.textContent || "";
 
   resetButton?.addEventListener("click", () => {
     form.reset();
+    form.removeAttribute("aria-busy");
     setFormStatus(form, "");
     setFormSuccessState(form, false);
   });
@@ -115,11 +118,11 @@ contactForms.forEach((form) => {
 
     const kind = form.getAttribute("data-contact-form") || "";
     const endpoint = FORM_ENDPOINTS[kind] || "";
-    const submitButton = form.querySelector('button[type="submit"]');
     const honeypot = form.querySelector('input[name="website"]');
 
     if (honeypot?.value) {
       form.reset();
+      form.removeAttribute("aria-busy");
       setFormStatus(form, "");
       setFormSuccessState(form, true);
       return;
@@ -140,7 +143,12 @@ contactForms.forEach((form) => {
     formData.append("submitted_at", new Date().toISOString());
 
     submitButton?.setAttribute("disabled", "true");
-    setFormStatus(form, "Sending...");
+    submitButton?.classList.add("is-loading");
+    if (submitButton) {
+      submitButton.textContent = "Sending...";
+    }
+    form.setAttribute("aria-busy", "true");
+    setFormStatus(form, "Sending now. This can take a few seconds.");
 
     try {
       await fetch(endpoint, {
@@ -153,15 +161,21 @@ contactForms.forEach((form) => {
       });
 
       form.reset();
+      form.removeAttribute("aria-busy");
       setFormStatus(form, "");
       setFormSuccessState(form, true);
     } catch {
+      form.removeAttribute("aria-busy");
       setFormStatus(
         form,
         "There was a problem sending the form. Please try again or email hello@bristolpipeband.org.",
         "is-error",
       );
     } finally {
+      submitButton?.classList.remove("is-loading");
+      if (submitButton) {
+        submitButton.textContent = defaultButtonLabel;
+      }
       submitButton?.removeAttribute("disabled");
     }
   });
