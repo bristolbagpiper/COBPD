@@ -30,16 +30,32 @@ This means Firebase stays the source of truth for gigs and queue state, while Ap
 
 1. Create a second standalone Apps Script project.
 2. Paste in [apps-script-mailer.gs](/abs/path/c:/Users/aaron/Documents/COBPD/apps-script-mailer.gs:1).
-3. In **Project Settings > Script properties**, set:
+3. In **Project Settings**, enable **Show "appsscript.json" manifest file in editor**.
+4. Replace the manifest contents with [apps-script-mailer.appsscript.json](/abs/path/c:/Users/aaron/Documents/COBPD/apps-script-mailer.appsscript.json:1).
+5. In **Project Settings > Script properties**, set:
    - `FIRESTORE_PROJECT_ID = cobpd-3bf88`
-4. Run `processQueuedGigEmails` once manually from the editor.
+6. Run `processQueuedGigEmails` once manually from the editor.
    - This is important because Apps Script needs to request permission for:
      - Gmail sending
      - spreadsheet access
      - URL fetch
      - Firestore / Datastore API access through your Google account
-5. Add a **time-driven trigger** for `processQueuedGigEmails`.
+7. Add a **time-driven trigger** for `processQueuedGigEmails`.
    - every 5 minutes is fine for your use case
+
+## If You Get `ACCESS_TOKEN_SCOPE_INSUFFICIENT`
+
+That means the Apps Script project was created without the Firestore scope.
+
+Fix it like this:
+
+1. Open `appsscript.json` in the Apps Script editor.
+2. Replace it with [apps-script-mailer.appsscript.json](/abs/path/c:/Users/aaron/Documents/COBPD/apps-script-mailer.appsscript.json:1).
+3. Save.
+4. Run `processQueuedGigEmails` again.
+5. Re-accept the permissions prompt.
+
+If it still fails after that, the next likely issue is that the **Firestore API** is not enabled on the Google Cloud project attached to the Apps Script project.
 
 ## Important Pushback
 

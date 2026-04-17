@@ -6,13 +6,17 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function memberRecordExists() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/members/$(request.auth.uid));
+    }
+
     function memberRecord() {
       return get(/databases/$(database)/documents/members/$(request.auth.uid));
     }
 
     function isAdminMember() {
-      return isSignedIn() &&
-        memberRecord().exists() &&
+      return memberRecordExists() &&
         memberRecord().data.active == true &&
         memberRecord().data.admin == true;
     }
@@ -28,7 +32,7 @@ service cloud.firestore {
 
     match /gigs/{gigId} {
       allow get, list: if canReadMembersArea();
-      allow create, update: if canReadMembersArea();
+      allow create, update: if isAdminMember();
       allow delete: if false;
     }
 
