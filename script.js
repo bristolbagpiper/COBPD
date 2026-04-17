@@ -26,7 +26,7 @@ const staticLegacyYears = new Set(
     .filter(Boolean),
 );
 const STATUS_POLL_TIMEOUT_MS = 30000;
-const STATUS_POLL_INTERVAL_MS = 700;
+const STATUS_POLL_INTERVAL_MS = 350;
 
 const FORM_ENDPOINTS = {
   booking: "https://script.google.com/macros/s/AKfycbxKYfHEFpIVj2TpUlaqeNJShS6gND_XUshja4Jq-vBoVCoWMqUlSg4WT25ii6krvdH9Vw/exec",
@@ -931,16 +931,18 @@ const postMembersAction = async (action, payload, onProgress) => {
     request_id: requestId,
   });
 
-  await fetch(MEMBERS_ENDPOINT, {
+  const requestPromise = fetch(MEMBERS_ENDPOINT, {
     method: "POST",
     mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
     body: formData.toString(),
-  });
+  }).catch(() => null);
 
-  return pollSubmissionStatus(MEMBERS_ENDPOINT, requestId, onProgress);
+  const status = await pollSubmissionStatus(MEMBERS_ENDPOINT, requestId, onProgress);
+  await requestPromise;
+  return status;
 };
 
 const loadMembersDashboard = async (
