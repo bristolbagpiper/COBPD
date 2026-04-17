@@ -109,7 +109,7 @@ Expected JSON payload for `send_gig_emails`:
 
 ## What This Does Not Fix
 
-- It does **not** tighten your current Firestore rule that lets any signed-in user write `gigs`.
+- It does **not** replace your Firestore permissions; those still need to stay correct separately.
 - It does **not** schedule future reminders by date; it only processes gigs already marked as queued.
 - It does **not** make browser-triggered mail secure. If you expose the shared secret in frontend code, you have missed the point.
 

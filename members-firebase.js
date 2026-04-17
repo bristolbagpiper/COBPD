@@ -1027,7 +1027,7 @@ if (!membersPage) {
       await loadDashboard(auth.currentUser, "Dashboard refreshed.");
       setMessage(
         membersAdminStatus,
-        `${label} queued for ${gig.name || "gig"}. A server-side mail job still needs to process it.`,
+        `${label} queued for ${gig.name || "gig"}. The scheduled mail worker still needs to process it.`,
         "is-success",
       );
     } catch (error) {
