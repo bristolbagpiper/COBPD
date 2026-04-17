@@ -943,7 +943,11 @@ const postMembersAction = async (action, payload, onProgress) => {
   return pollSubmissionStatus(MEMBERS_ENDPOINT, requestId, onProgress);
 };
 
-const loadMembersDashboard = async (token, statusMessage = "") => {
+const loadMembersDashboard = async (
+  token,
+  statusMessage = "",
+  { silentInvalidSession = false } = {},
+) => {
   if (!token) {
     storeMemberSessionToken("");
     showMembersAuth();
@@ -956,14 +960,30 @@ const loadMembersDashboard = async (token, statusMessage = "") => {
     token,
   });
 
-  if (!payload?.ok || !payload?.authenticated) {
-    storeMemberSessionToken("");
+  if (!payload) {
     showMembersAuth();
     setMembersMessage(
       membersLoginStatus,
-      "Your members session is no longer valid. Please sign in again.",
+      "We could not reach the members service. Please try again.",
       "is-error",
     );
+    return;
+  }
+
+  if (!payload.ok || !payload.authenticated) {
+    storeMemberSessionToken("");
+    showMembersAuth();
+
+    if (!silentInvalidSession) {
+      setMembersMessage(
+        membersLoginStatus,
+        "Your members session is no longer valid. Please sign in again.",
+        "is-error",
+      );
+    } else {
+      setMembersMessage(membersLoginStatus, "");
+    }
+
     return;
   }
 
@@ -1284,7 +1304,7 @@ if (membersPage) {
   const storedToken = getStoredMemberSessionToken();
 
   if (storedToken) {
-    loadMembersDashboard(storedToken);
+    loadMembersDashboard(storedToken, "", { silentInvalidSession: true });
   } else {
     showMembersAuth();
   }
