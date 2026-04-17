@@ -10,31 +10,31 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/members/$(request.auth.uid));
     }
 
-    function isActiveMember() {
+    function isAdminMember() {
       return isSignedIn() &&
         memberRecord().exists() &&
-        memberRecord().data.active == true;
-    }
-
-    function isAdminMember() {
-      return isActiveMember() &&
+        memberRecord().data.active == true &&
         memberRecord().data.admin == true;
     }
 
+    function canReadMembersArea() {
+      return isSignedIn();
+    }
+
     match /members/{memberId} {
-      allow read: if isActiveMember();
+      allow get, list: if canReadMembersArea();
       allow write: if false;
     }
 
     match /gigs/{gigId} {
-      allow read: if isActiveMember();
+      allow get, list: if canReadMembersArea();
       allow create, update: if isAdminMember();
       allow delete: if false;
     }
 
     match /responses/{responseId} {
-      allow read: if isActiveMember();
-      allow create, update: if isActiveMember() &&
+      allow get, list: if canReadMembersArea();
+      allow create, update: if canReadMembersArea() &&
         request.resource.data.memberId == request.auth.uid &&
         request.resource.data.gigId is string &&
         request.resource.data.answer in ["yes", "no", "maybe"];

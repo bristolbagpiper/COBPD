@@ -971,10 +971,14 @@ if (!membersPage) {
         gigId ? "Gig updated." : "Gig created.",
         "is-success",
       );
-    } catch {
+    } catch (error) {
+      console.error("Gig save failed", error);
       setMessage(
         membersAdminFormStatus,
-        "Gig changes could not be saved. Check your Firestore rules.",
+        getFirebaseErrorMessage(
+          error,
+          "Gig changes could not be saved. Check your Firestore rules.",
+        ),
         "is-error",
       );
     } finally {
@@ -1026,10 +1030,14 @@ if (!membersPage) {
         `${label} queued for ${gig.name || "gig"}. A server-side mail job still needs to process it.`,
         "is-success",
       );
-    } catch {
+    } catch (error) {
+      console.error("Gig queue action failed", error);
       setMessage(
         membersAdminStatus,
-        `${label} could not be queued. Check your Firestore rules.`,
+        getFirebaseErrorMessage(
+          error,
+          `${label} could not be queued. Check your Firestore rules.`,
+        ),
         "is-error",
       );
     }
