@@ -28,7 +28,7 @@ service cloud.firestore {
 
     match /gigs/{gigId} {
       allow get, list: if canReadMembersArea();
-      allow create, update: if isAdminMember();
+      allow create, update: if canReadMembersArea();
       allow delete: if false;
     }
 

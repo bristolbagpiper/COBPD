@@ -106,14 +106,17 @@ Fields:
 ## 5. Admin workflow
 
 - Members with `admin: true` can create and edit gigs inside the members portal.
-- The "Queue notify all" and "Queue reminder" buttons only write queue fields into Firestore.
-- Actual email delivery still needs a trusted backend such as a Firebase Cloud Function or Cloud Run job.
+- The "Queue notify all" and "Queue reminder" buttons write queue fields into Firestore.
+- Actual email delivery can be handled either by:
+  - the Apps Script queue worker described in [apps-script-split-setup.md](/abs/path/c:/Users/aaron/Documents/COBPD/apps-script-split-setup.md:1), or
+  - the Cloud Function described in [firebase-email-queue-setup.md](/abs/path/c:/Users/aaron/Documents/COBPD/firebase-email-queue-setup.md:1).
 - Do not try to send bulk email directly from browser JavaScript. That is the wrong trust boundary.
 
 ## 6. Important limitations
 
 - This migration only moves the **members area** to Firebase.
 - Public booking and joining forms still use `apps-script.gs`.
-- Automatic email notifications are only represented as Firestore queue fields until a server-side mail worker is added.
+- If you use the Apps Script queue worker, you can avoid Blaze.
+- If you use the Cloud Function worker, the project must be on the **Blaze** plan.
 
-If you want the notification piece moved too, the next step is a Firebase Cloud Function or another mail service. That is separate work.
+Deploy and configure one of the workers before expecting queued notifications or reminders to send any email.
