@@ -774,6 +774,11 @@ if (!membersPage) {
     return fallbackMessage;
   };
 
+  const getReadableErrorCode = (error) => {
+    const code = String(error?.code || "").trim();
+    return code || "unknown-error";
+  };
+
   let auth = null;
   let db = null;
   let currentMember = null;
@@ -791,7 +796,15 @@ if (!membersPage) {
     setMessage(membersStatus, statusMessage);
 
     try {
-      const memberSnapshot = await getDoc(doc(db, firebaseCollections.members, user.uid));
+      let memberSnapshot = null;
+
+      try {
+        memberSnapshot = await getDoc(doc(db, firebaseCollections.members, user.uid));
+      } catch (error) {
+        throw new Error(
+          `failed reading members/${user.uid} (${getReadableErrorCode(error)}: ${error?.message || "no message"})`,
+        );
+      }
 
       if (!memberSnapshot.exists()) {
         await signOut(auth);
@@ -814,11 +827,33 @@ if (!membersPage) {
         return;
       }
 
-      const [membersSnapshot, gigsSnapshot, responsesSnapshot] = await Promise.all([
-        getDocs(collection(db, firebaseCollections.members)),
-        getDocs(collection(db, firebaseCollections.gigs)),
-        getDocs(collection(db, firebaseCollections.responses)),
-      ]);
+      let membersSnapshot = null;
+      let gigsSnapshot = null;
+      let responsesSnapshot = null;
+
+      try {
+        membersSnapshot = await getDocs(collection(db, firebaseCollections.members));
+      } catch (error) {
+        throw new Error(
+          `failed listing members (${getReadableErrorCode(error)}: ${error?.message || "no message"})`,
+        );
+      }
+
+      try {
+        gigsSnapshot = await getDocs(collection(db, firebaseCollections.gigs));
+      } catch (error) {
+        throw new Error(
+          `failed listing gigs (${getReadableErrorCode(error)}: ${error?.message || "no message"})`,
+        );
+      }
+
+      try {
+        responsesSnapshot = await getDocs(collection(db, firebaseCollections.responses));
+      } catch (error) {
+        throw new Error(
+          `failed listing responses (${getReadableErrorCode(error)}: ${error?.message || "no message"})`,
+        );
+      }
 
       currentMember = memberData;
       currentMembers = membersSnapshot.docs
