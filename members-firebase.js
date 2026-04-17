@@ -365,98 +365,95 @@ if (!membersPage) {
     const answeredAt = formatAnsweredAt(response.answered_at);
     const respondedCount = (gig.stats?.yes || 0) + (gig.stats?.no || 0) + (gig.stats?.maybe || 0);
     const totalMembers = respondedCount + (gig.stats?.no_reply || 0);
+    const responseLabel = responseLabels[selectedAnswer] || "No reply";
     const statusCopy = response.answer
       ? `Your current reply is ${responseLabels[response.answer] || response.answer}.`
       : "You have not replied yet.";
 
     return `
-      <article class="members-gig">
-        <div class="members-gig__top">
-          <div class="members-gig__heading">
-            <p class="eyebrow">Gig</p>
-            <h3>${escapeHtml(gig.name || "")}</h3>
-            <p class="members-gig__meta">
-              <span>${escapeHtml(formatGigDate(gig.date))}</span>
-              <span>${escapeHtml(normaliseTime(gig.time || ""))}</span>
-              <span>${escapeHtml(gig.location || "Location TBC")}</span>
-            </p>
-          </div>
-          <div class="members-gig__flags">
-            ${gig.status ? `<span class="members-gig__flag">${escapeHtml(gig.status)}</span>` : ""}
-            <span class="members-gig__flag ${
-              gig.public ? "members-gig__flag--public" : "members-gig__flag--internal"
-            }">${gig.public ? "Public" : "Members only"}</span>
-          </div>
-        </div>
-
-        <div class="members-stats" aria-label="Gig response totals">
-          <div class="members-stat">
-            <span class="members-stat__value">${gig.stats?.yes || 0}</span>
-            <span class="members-stat__label">Yes</span>
-          </div>
-          <div class="members-stat">
-            <span class="members-stat__value">${gig.stats?.no || 0}</span>
-            <span class="members-stat__label">No</span>
-          </div>
-          <div class="members-stat">
-            <span class="members-stat__value">${gig.stats?.maybe || 0}</span>
-            <span class="members-stat__label">Maybe</span>
-          </div>
-          <div class="members-stat">
-            <span class="members-stat__value">${gig.stats?.no_reply || 0}</span>
-            <span class="members-stat__label">No reply</span>
-          </div>
-        </div>
-
-        <form class="members-response" data-members-response-form data-gig-id="${escapeHtml(
-          gig.id || "",
-        )}">
-          <input type="hidden" name="answer" value="${escapeHtml(selectedAnswer)}" />
-          <div class="members-response__choices" role="group" aria-label="Select your reply">
-            <button class="members-choice ${
-              selectedAnswer === "yes" ? "is-selected" : ""
-            }" type="button" data-answer="yes">Yes</button>
-            <button class="members-choice ${
-              selectedAnswer === "no" ? "is-selected" : ""
-            }" type="button" data-answer="no">No</button>
-            <button class="members-choice ${
-              selectedAnswer === "maybe" ? "is-selected" : ""
-            }" type="button" data-answer="maybe">Maybe</button>
+      <details class="members-gig">
+        <summary class="members-gig__summary">
+          <div class="members-gig__dateblock">
+            <span class="members-gig__date">${escapeHtml(formatGigDate(gig.date))}</span>
+            <span class="members-gig__time">${escapeHtml(normaliseTime(gig.time || ""))}</span>
           </div>
 
-          <label class="members-response__reason" ${
-            selectedAnswer === "maybe" ? "" : "hidden"
-          }>
-            <span class="members-response__reason-label">Maybe reason</span>
-            <textarea
-              class="field__control field__control--textarea"
-              name="reason"
-              rows="3"
-            >${escapeHtml(maybeReason)}</textarea>
-          </label>
-
-          <div class="members-response__footer">
-            <button class="button button--solid" type="submit">Save reply</button>
-            <p class="members-response__meta">${
-              answeredAt ? `${statusCopy} Saved ${answeredAt}.` : statusCopy
-            }</p>
-          </div>
-          <p class="members-status" data-members-response-status aria-live="polite"></p>
-        </form>
-
-        <details class="members-gig__details">
-          <summary class="members-gig__details-toggle">
-            <span class="members-gig__details-label">Band replies</span>
-            <span class="members-gig__details-meta">${respondedCount} replied / ${totalMembers} total</span>
-          </summary>
-          <div class="members-gig__details-body">
-            ${gig.notes ? `<p class="members-gig__notes">${escapeHtml(gig.notes)}</p>` : ""}
-            <div class="members-roster">
-              ${renderRosterGroups(gig.roster || [])}
+          <div class="members-gig__primary">
+            <div class="members-gig__title-row">
+              <h3>${escapeHtml(gig.name || "")}</h3>
+              <div class="members-gig__flags">
+                ${gig.status ? `<span class="members-gig__flag">${escapeHtml(gig.status)}</span>` : ""}
+                <span class="members-gig__flag ${
+                  gig.public ? "members-gig__flag--public" : "members-gig__flag--internal"
+                }">${gig.public ? "Public" : "Members only"}</span>
+              </div>
             </div>
+            <p class="members-gig__meta">${escapeHtml(gig.location || "Location TBC")}</p>
           </div>
-        </details>
-      </article>
+
+          <div class="members-gig__totals" aria-label="Gig response totals">
+            <span class="members-gig__count"><strong>${gig.stats?.yes || 0}</strong><span>Yes</span></span>
+            <span class="members-gig__count"><strong>${gig.stats?.no || 0}</strong><span>No</span></span>
+            <span class="members-gig__count"><strong>${gig.stats?.maybe || 0}</strong><span>Maybe</span></span>
+            <span class="members-gig__count"><strong>${gig.stats?.no_reply || 0}</strong><span>No reply</span></span>
+          </div>
+
+          <div class="members-gig__response-summary">
+            <span class="${getResponseTagClass(selectedAnswer)}">${escapeHtml(responseLabel)}</span>
+          </div>
+        </summary>
+
+        <div class="members-gig__body">
+          <form class="members-response" data-members-response-form data-gig-id="${escapeHtml(
+            gig.id || "",
+          )}">
+            <input type="hidden" name="answer" value="${escapeHtml(selectedAnswer)}" />
+            <div class="members-response__choices" role="group" aria-label="Select your reply">
+              <button class="members-choice ${
+                selectedAnswer === "yes" ? "is-selected" : ""
+              }" type="button" data-answer="yes">Yes</button>
+              <button class="members-choice ${
+                selectedAnswer === "no" ? "is-selected" : ""
+              }" type="button" data-answer="no">No</button>
+              <button class="members-choice ${
+                selectedAnswer === "maybe" ? "is-selected" : ""
+              }" type="button" data-answer="maybe">Maybe</button>
+            </div>
+
+            <label class="members-response__reason" ${
+              selectedAnswer === "maybe" ? "" : "hidden"
+            }>
+              <span class="members-response__reason-label">Maybe reason</span>
+              <textarea
+                class="field__control field__control--textarea"
+                name="reason"
+                rows="3"
+              >${escapeHtml(maybeReason)}</textarea>
+            </label>
+
+            <div class="members-response__footer">
+              <button class="button button--solid" type="submit">Save reply</button>
+              <p class="members-response__meta">${
+                answeredAt ? `${statusCopy} Saved ${answeredAt}.` : statusCopy
+              }</p>
+            </div>
+            <p class="members-status" data-members-response-status aria-live="polite"></p>
+          </form>
+
+          <details class="members-gig__details">
+            <summary class="members-gig__details-toggle">
+              <span class="members-gig__details-label">Band replies</span>
+              <span class="members-gig__details-meta">${respondedCount} replied / ${totalMembers} total</span>
+            </summary>
+            <div class="members-gig__details-body">
+              ${gig.notes ? `<p class="members-gig__notes">${escapeHtml(gig.notes)}</p>` : ""}
+              <div class="members-roster">
+                ${renderRosterGroups(gig.roster || [])}
+              </div>
+            </div>
+          </details>
+        </div>
+      </details>
     `;
   };
 

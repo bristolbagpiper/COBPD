@@ -1124,48 +1124,126 @@ h2 {
 
 .members-gigs {
   display: grid;
-  gap: 1.25rem;
+  gap: 0.75rem;
 }
 
 .members-gig {
   display: grid;
-  gap: 1.15rem;
-  padding: clamp(1.2rem, 2.6vw, 1.6rem);
+  gap: 0;
+  padding: 0;
   background: rgba(255, 255, 255, 0.84);
   border: 1px solid rgba(4, 6, 31, 0.08);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow);
+  border-radius: 1.15rem;
+  box-shadow: none;
 }
 
-.members-gig__top {
+.members-gig__summary {
+  display: grid;
+  grid-template-columns: minmax(8rem, 10rem) minmax(0, 1.8fr) minmax(16rem, 1.2fr) auto;
+  gap: 0.9rem 1.1rem;
+  align-items: center;
+  padding: 1rem 1.15rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.members-gig__summary::-webkit-details-marker {
+  display: none;
+}
+
+.members-gig__summary::after {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: rgba(23, 127, 156, 0.08);
+  color: var(--teal-deep);
+  font-size: 1rem;
+  line-height: 1;
+  justify-self: end;
+}
+
+.members-gig[open] .members-gig__summary::after {
+  content: "-";
+}
+
+.members-gig__dateblock,
+.members-gig__primary {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.members-gig__date {
+  font-weight: 700;
+}
+
+.members-gig__time {
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+}
+
+.members-gig__title-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
+  align-items: baseline;
+  gap: 0.5rem 0.9rem;
 }
 
-.members-gig__heading {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.members-gig__heading h3 {
+.members-gig__primary h3 {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.65rem, 3.2vw, 2.4rem);
-  line-height: 0.98;
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  line-height: 1.2;
 }
 
 .members-gig__meta,
 .members-gig__flags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem 0.9rem;
+  gap: 0.35rem 0.7rem;
 }
 
 .members-gig__meta {
   color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.members-gig__totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+}
+
+.members-gig__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.8rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(4, 6, 31, 0.045);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.members-gig__count strong {
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.members-gig__response-summary {
+  display: inline-flex;
+  justify-self: end;
+}
+
+.members-gig__body {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0 1.15rem 1rem;
+  border-top: 1px solid rgba(4, 6, 31, 0.08);
 }
 
 .members-gig__notes {
@@ -1177,11 +1255,10 @@ h2 {
   display: grid;
   gap: 0.9rem;
   padding-top: 0.2rem;
-  border-top: 1px solid rgba(4, 6, 31, 0.08);
 }
 
 .members-gig__details[open] {
-  padding-top: 1rem;
+  padding-top: 0.8rem;
 }
 
 .members-gig__details-toggle {
@@ -1229,6 +1306,10 @@ h2 {
   font-weight: 500;
 }
 
+.members-gig__details[open] .members-gig__details-label::before {
+  content: "-";
+}
+
 .members-gig__details-body {
   display: grid;
   gap: 0.95rem;
@@ -1239,8 +1320,8 @@ h2 {
 .members-response-tag {
   display: inline-flex;
   align-items: center;
-  min-height: 1.9rem;
-  padding: 0.3rem 0.7rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 700;
@@ -1263,39 +1344,11 @@ h2 {
   color: var(--forest);
 }
 
-.members-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.members-stat {
-  display: grid;
-  gap: 0.2rem;
-  padding: 0.95rem 1rem;
-  border-radius: 1.1rem;
-  background: rgba(4, 6, 31, 0.045);
-}
-
-.members-stat__value {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  line-height: 0.9;
-}
-
-.members-stat__label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(4, 6, 31, 0.56);
-}
-
 .members-response {
   display: grid;
-  gap: 0.9rem;
-  padding: 1rem 1.1rem 1.1rem;
-  border-radius: 1.2rem;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem 1rem;
+  border-radius: 1rem;
   background: rgba(4, 6, 31, 0.04);
 }
 
@@ -1309,14 +1362,14 @@ h2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.9rem;
-  padding: 0.65rem 1rem;
+  min-height: 2.45rem;
+  padding: 0.5rem 0.85rem;
   border: 1px solid rgba(4, 6, 31, 0.12);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.84);
   color: var(--ink);
   font: inherit;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1354,12 +1407,13 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.8rem 1rem;
+  gap: 0.65rem 0.9rem;
 }
 
 .members-response__meta {
   margin: 0;
   color: var(--ink-soft);
+  font-size: 0.95rem;
 }
 
 .members-response__reason {
@@ -1380,13 +1434,13 @@ h2 {
 
 .members-roster {
   display: grid;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .members-roster-group {
   display: grid;
-  gap: 0.75rem;
-  padding-top: 1rem;
+  gap: 0.65rem;
+  padding-top: 0.8rem;
   border-top: 1px solid rgba(4, 6, 31, 0.08);
 }
 
@@ -1877,18 +1931,22 @@ body.has-motion .reveal.is-visible {
     grid-template-columns: 1fr;
   }
 
-  .members-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .members-app__header,
-  .members-gig__top,
   .members-roster-header {
     display: grid;
   }
 
   .members-app__actions {
     justify-content: flex-start;
+  }
+
+  .members-gig__summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .members-gig__response-summary,
+  .members-gig__summary::after {
+    justify-self: start;
   }
 
   .schedule-item {
@@ -2023,14 +2081,14 @@ body.has-motion .reveal.is-visible {
     padding: 1rem;
   }
 
-  .members-stats {
-    grid-template-columns: 1fr;
-  }
-
   .members-gig,
-  .members-response,
   .members-roster-member,
   .members-admin-card {
+    padding-inline: 1rem;
+  }
+
+  .members-gig__body,
+  .members-response {
     padding-inline: 1rem;
   }
 
