@@ -166,54 +166,81 @@ function handleWebsiteFormSubmission_(data) {
 
 function handleMemberLogin_(data) {
   const requestId = data.request_id || Utilities.getUuid();
-  const email = normalizeEmail_(data.email || "");
-  const password = String(data.password || "");
-  const spreadsheet = openSubmissionSpreadsheet_();
-
-  if (!spreadsheet || !email || !password) {
-    storeStatus_(requestId, {
-      ok: false,
-      received: true,
-      request_id: requestId,
-      state: "member_login_failed",
-      error: "invalid_credentials",
-    });
-    return respond_(200, { ok: false, received: true, request_id: requestId });
-  }
-
-  const membersSheet = getMembersSheet_(spreadsheet);
-  const memberEntry = findActiveMemberByEmail_(membersSheet, email);
-
-  if (!memberEntry || !verifyMemberPassword_(membersSheet, memberEntry, password)) {
-    storeStatus_(requestId, {
-      ok: false,
-      received: true,
-      request_id: requestId,
-      state: "member_login_failed",
-      error: "invalid_credentials",
-    });
-    return respond_(200, { ok: false, received: true, request_id: requestId });
-  }
-
-  const member = toMemberView_(memberEntry);
-  const token = Utilities.getUuid() + Utilities.getUuid().replace(/-/g, "");
-
-  storeMemberSession_(token, member);
-  touchMemberLastLogin_(membersSheet, memberEntry.rowIndex);
   storeStatus_(requestId, {
     ok: true,
     received: true,
     request_id: requestId,
-    state: "member_authenticated",
-    token: token,
-    member: member,
+    state: "received",
   });
 
-  return respond_(200, {
-    ok: true,
-    received: true,
-    request_id: requestId,
-  });
+  try {
+    const email = normalizeEmail_(data.email || "");
+    const password = String(data.password || "");
+    const spreadsheet = openSubmissionSpreadsheet_();
+
+    if (!spreadsheet || !email || !password) {
+      storeStatus_(requestId, {
+        ok: false,
+        received: true,
+        request_id: requestId,
+        state: "member_login_failed",
+        error: "invalid_credentials",
+      });
+      return respond_(200, { ok: false, received: true, request_id: requestId });
+    }
+
+    const membersSheet = getMembersSheet_(spreadsheet);
+    const memberEntry = findActiveMemberByEmail_(membersSheet, email);
+
+    if (!memberEntry || !verifyMemberPassword_(membersSheet, memberEntry, password)) {
+      storeStatus_(requestId, {
+        ok: false,
+        received: true,
+        request_id: requestId,
+        state: "member_login_failed",
+        error: "invalid_credentials",
+      });
+      return respond_(200, { ok: false, received: true, request_id: requestId });
+    }
+
+    const member = toMemberView_(memberEntry);
+    const token = Utilities.getUuid() + Utilities.getUuid().replace(/-/g, "");
+
+    storeMemberSession_(token, member);
+    touchMemberLastLogin_(membersSheet, memberEntry.rowIndex);
+    storeStatus_(requestId, {
+      ok: true,
+      received: true,
+      request_id: requestId,
+      state: "member_authenticated",
+      token: token,
+      member: member,
+    });
+
+    return respond_(200, {
+      ok: true,
+      received: true,
+      request_id: requestId,
+    });
+  } catch (error) {
+    const message = getErrorMessage_(error);
+
+    safeLogMessage_("member_login failed for request " + requestId + ": " + message);
+    storeStatus_(requestId, {
+      ok: false,
+      received: true,
+      request_id: requestId,
+      state: "member_login_failed",
+      error: "server_error",
+      detail: message,
+    });
+
+    return respond_(200, {
+      ok: false,
+      received: true,
+      request_id: requestId,
+    });
+  }
 }
 
 function handleMemberLogout_(data) {
@@ -237,74 +264,101 @@ function handleMemberLogout_(data) {
 
 function handleMemberResponse_(data) {
   const requestId = data.request_id || Utilities.getUuid();
-  const answer = normalizeMemberAnswer_(data.answer || "");
-  const reason = String(data.reason || "").trim();
-  const token = String(data.token || "");
-  const gigId = String(data.gig_id || "").trim();
-  const member = readMemberSession_(token);
+  storeStatus_(requestId, {
+    ok: true,
+    received: true,
+    request_id: requestId,
+    state: "received",
+  });
 
-  if (!member) {
+  try {
+    const answer = normalizeMemberAnswer_(data.answer || "");
+    const reason = String(data.reason || "").trim();
+    const token = String(data.token || "");
+    const gigId = String(data.gig_id || "").trim();
+    const member = readMemberSession_(token);
+
+    if (!member) {
+      storeStatus_(requestId, {
+        ok: false,
+        received: true,
+        request_id: requestId,
+        state: "member_response_failed",
+        error: "invalid_session",
+      });
+      return respond_(200, { ok: false, received: true, request_id: requestId });
+    }
+
+    if (!gigId || !answer) {
+      storeStatus_(requestId, {
+        ok: false,
+        received: true,
+        request_id: requestId,
+        state: "member_response_failed",
+        error: "invalid_answer",
+      });
+      return respond_(200, { ok: false, received: true, request_id: requestId });
+    }
+
+    const spreadsheet = openSubmissionSpreadsheet_();
+
+    if (!spreadsheet) {
+      storeStatus_(requestId, {
+        ok: false,
+        received: true,
+        request_id: requestId,
+        state: "member_response_failed",
+        error: "server_error",
+      });
+      return respond_(200, { ok: false, received: true, request_id: requestId });
+    }
+
+    const gigsSheet = getMemberGigsSheet_(spreadsheet);
+    const gigEntry = findMemberGigById_(gigsSheet, gigId);
+
+    if (!gigEntry) {
+      storeStatus_(requestId, {
+        ok: false,
+        received: true,
+        request_id: requestId,
+        state: "member_response_failed",
+        error: "unknown_gig",
+      });
+      return respond_(200, { ok: false, received: true, request_id: requestId });
+    }
+
+    upsertMemberResponse_(spreadsheet, member, gigId, answer, answer === "maybe" ? reason : "");
     storeStatus_(requestId, {
-      ok: false,
+      ok: true,
       received: true,
       request_id: requestId,
-      state: "member_response_failed",
-      error: "invalid_session",
+      state: "member_response_saved",
     });
-    return respond_(200, { ok: false, received: true, request_id: requestId });
-  }
 
-  if (!gigId || !answer) {
-    storeStatus_(requestId, {
-      ok: false,
+    return respond_(200, {
+      ok: true,
       received: true,
       request_id: requestId,
-      state: "member_response_failed",
-      error: "invalid_answer",
     });
-    return respond_(200, { ok: false, received: true, request_id: requestId });
-  }
+  } catch (error) {
+    const message = getErrorMessage_(error);
 
-  const spreadsheet = openSubmissionSpreadsheet_();
-
-  if (!spreadsheet) {
+    safeLogMessage_("member_response failed for request " + requestId + ": " + message);
     storeStatus_(requestId, {
       ok: false,
       received: true,
       request_id: requestId,
       state: "member_response_failed",
       error: "server_error",
+      detail: message,
     });
-    return respond_(200, { ok: false, received: true, request_id: requestId });
-  }
 
-  const gigsSheet = getMemberGigsSheet_(spreadsheet);
-  const gigEntry = findMemberGigById_(gigsSheet, gigId);
-
-  if (!gigEntry) {
-    storeStatus_(requestId, {
+    return respond_(200, {
       ok: false,
       received: true,
       request_id: requestId,
-      state: "member_response_failed",
-      error: "unknown_gig",
     });
-    return respond_(200, { ok: false, received: true, request_id: requestId });
   }
-
-  upsertMemberResponse_(spreadsheet, member, gigId, answer, answer === "maybe" ? reason : "");
-  storeStatus_(requestId, {
-    ok: true,
-    received: true,
-    request_id: requestId,
-    state: "member_response_saved",
-  });
-
-  return respond_(200, {
-    ok: true,
-    received: true,
-    request_id: requestId,
-  });
 }
 
 function buildMemberDashboardResponse_(token) {

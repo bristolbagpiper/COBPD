@@ -25,7 +25,7 @@ const staticLegacyYears = new Set(
     .map((heading) => heading.textContent.trim())
     .filter(Boolean),
 );
-const STATUS_POLL_TIMEOUT_MS = 12000;
+const STATUS_POLL_TIMEOUT_MS = 30000;
 const STATUS_POLL_INTERVAL_MS = 700;
 
 const FORM_ENDPOINTS = {
