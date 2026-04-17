@@ -62,25 +62,16 @@
         <div class="page-hero__veil"></div>
         <div class="page-hero__content shell">
           <p class="eyebrow">Members</p>
-          <h1>Gig responses, availability, and section coverage in one place.</h1>
-          <p class="page-hero__lede">
-            Sign in with the login provisioned by the band admin to reply yes, no, or maybe for
-            each gig and see how each section is shaping up.
-          </p>
+          <h1>Members Area</h1>
         </div>
       </section>
 
       <section class="section section--paper reveal">
-        <div class="shell members-shell" data-members-page>
+        <div class="shell members-shell" data-members-page data-members-mode="firebase">
           <div class="members-auth" data-members-auth>
             <div class="members-auth__intro">
               <p class="eyebrow">Access</p>
-              <h2>Member login only.</h2>
-              <p>
-                This area is intended to replace ad hoc gig sign-up tools. Admins provision member
-                accounts separately from the public website schedule so notification emails and
-                private availability stay under control.
-              </p>
+              <h2>Member login only</h2>
             </div>
 
             <form class="form-card members-login" data-members-login-form novalidate>
@@ -132,6 +123,108 @@
               Reply to each gig below. Selecting <strong>maybe</strong> lets you leave a reason,
               and every response is timestamped when saved.
             </p>
+
+            <section class="members-admin" data-members-admin hidden>
+              <div class="members-admin__intro">
+                <p class="eyebrow">Admin</p>
+                <h3>Manage gigs from here</h3>
+                <p class="members-admin__summary">
+                  Create gigs inside the portal, then decide when notifications or reminders
+                  should be queued. Queueing does not magically send email from the browser; it
+                  just marks the gig for a server-side mail job.
+                </p>
+              </div>
+
+              <form class="form-card members-admin-form" data-members-admin-form novalidate>
+                <input type="hidden" name="gig_id" value="" />
+
+                <div class="form-grid">
+                  <label class="field">
+                    <span class="field__label">Gig name</span>
+                    <input class="field__control" type="text" name="name" required />
+                  </label>
+
+                  <label class="field">
+                    <span class="field__label">Date</span>
+                    <input class="field__control" type="date" name="date" required />
+                  </label>
+
+                  <label class="field">
+                    <span class="field__label">Location</span>
+                    <input class="field__control" type="text" name="location" />
+                  </label>
+
+                  <label class="field">
+                    <span class="field__label">Time</span>
+                    <input
+                      class="field__control"
+                      type="text"
+                      name="time"
+                      placeholder="19:30 or 19:30 - 21:00"
+                    />
+                  </label>
+
+                  <label class="field field--full">
+                    <span class="field__label">Status</span>
+                    <input
+                      class="field__control"
+                      type="text"
+                      name="status"
+                      placeholder="Confirmed, provisional, parade, etc."
+                    />
+                  </label>
+
+                  <label class="field field--full">
+                    <span class="field__label">Notes</span>
+                    <textarea
+                      class="field__control field__control--textarea"
+                      name="notes"
+                      rows="5"
+                    ></textarea>
+                  </label>
+                </div>
+
+                <div class="members-admin-form__toggles">
+                  <label class="members-toggle">
+                    <input type="checkbox" name="public" checked />
+                    <span class="members-toggle__copy">
+                      <span class="members-toggle__label">Public gig</span>
+                      <span class="members-toggle__meta">
+                        Keep this on if the gig should be treated as public-facing.
+                      </span>
+                    </span>
+                  </label>
+
+                  <label class="members-toggle">
+                    <input type="checkbox" name="archived" />
+                    <span class="members-toggle__copy">
+                      <span class="members-toggle__label">Archived</span>
+                      <span class="members-toggle__meta">
+                        Archive gigs instead of deleting them so old responses stay intact.
+                      </span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button class="button button--solid" type="submit" data-members-admin-submit>
+                    Create gig
+                  </button>
+                  <button
+                    class="button button--ghost-dark"
+                    type="button"
+                    data-members-admin-reset
+                  >
+                    Clear form
+                  </button>
+                </div>
+
+                <p class="members-status" data-members-admin-form-status aria-live="polite"></p>
+              </form>
+
+              <p class="members-status" data-members-admin-status aria-live="polite"></p>
+              <div class="members-admin-list" data-members-admin-gigs></div>
+            </section>
 
             <p class="members-status" data-members-status aria-live="polite"></p>
             <div class="members-empty" data-members-empty hidden></div>
@@ -192,6 +285,7 @@
       </div>
     </footer>
 
-    <script src="script.js?v=20260416-2205"></script>
+    <script src="script.js?v=20260417-1335"></script>
+    <script type="module" src="members-firebase.js?v=20260417-1335"></script>
   </body>
 </html>

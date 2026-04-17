@@ -1,0 +1,44 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function memberRecord() {
+      return get(/databases/$(database)/documents/members/$(request.auth.uid));
+    }
+
+    function isActiveMember() {
+      return isSignedIn() &&
+        memberRecord().exists() &&
+        memberRecord().data.active == true;
+    }
+
+    function isAdminMember() {
+      return isActiveMember() &&
+        memberRecord().data.admin == true;
+    }
+
+    match /members/{memberId} {
+      allow read: if isActiveMember();
+      allow write: if false;
+    }
+
+    match /gigs/{gigId} {
+      allow read: if isActiveMember();
+      allow create, update: if isAdminMember();
+      allow delete: if false;
+    }
+
+    match /responses/{responseId} {
+      allow read: if isActiveMember();
+      allow create, update: if isActiveMember() &&
+        request.resource.data.memberId == request.auth.uid &&
+        request.resource.data.gigId is string &&
+        request.resource.data.answer in ["yes", "no", "maybe"];
+      allow delete: if false;
+    }
+  }
+}

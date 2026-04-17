@@ -17,6 +17,8 @@ const membersRole = document.querySelector("[data-members-role]");
 const membersStatus = document.querySelector("[data-members-status]");
 const membersEmpty = document.querySelector("[data-members-empty]");
 const membersGigs = document.querySelector("[data-members-gigs]");
+const membersMode = membersPage?.dataset.membersMode || "";
+const usesFirebaseMembers = membersMode === "firebase";
 const upcomingSchedule = document.querySelector("[data-upcoming-schedule]");
 const liveLegacy = document.querySelector("[data-live-legacy]");
 const nextGigBanner = document.querySelector("[data-next-gig-banner]");
@@ -1013,7 +1015,7 @@ const updateMembersAnswerState = (form, answer) => {
   }
 };
 
-if (membersLoginForm) {
+if (membersLoginForm && !usesFirebaseMembers) {
   membersLoginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -1068,91 +1070,58 @@ if (membersLoginForm) {
   });
 }
 
-membersLogoutButton?.addEventListener("click", async () => {
-  const token = getStoredMemberSessionToken();
+if (!usesFirebaseMembers) {
+  membersLogoutButton?.addEventListener("click", async () => {
+    const token = getStoredMemberSessionToken();
 
-  try {
-    if (token) {
-      await postMembersAction("member_logout", { token });
+    try {
+      if (token) {
+        await postMembersAction("member_logout", { token });
+      }
+    } catch {
+      // Ignore logout failures and clear local state anyway.
     }
-  } catch {
-    // Ignore logout failures and clear local state anyway.
-  }
 
-  storeMemberSessionToken("");
-  showMembersAuth();
-  setMembersMessage(membersStatus, "");
-  setMembersMessage(membersLoginStatus, "Signed out.", "is-success");
-});
-
-membersGigs?.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-answer]");
-
-  if (!button) {
-    return;
-  }
-
-  const form = button.closest("[data-members-response-form]");
-  const answer = button.getAttribute("data-answer") || "";
-  updateMembersAnswerState(form, answer);
-});
-
-membersGigs?.addEventListener("submit", async (event) => {
-  const form = event.target.closest("[data-members-response-form]");
-
-  if (!form) {
-    return;
-  }
-
-  event.preventDefault();
-
-  const token = getStoredMemberSessionToken();
-  const gigId = form.getAttribute("data-gig-id") || "";
-  const answer = form.querySelector('input[name="answer"]')?.value || "";
-  const reason = form.querySelector('textarea[name="reason"]')?.value.trim() || "";
-  const submitButton = form.querySelector('button[type="submit"]');
-  const statusNode = form.querySelector("[data-members-response-status]");
-
-  if (!answer) {
-    setMembersMessage(statusNode, "Pick yes, no, or maybe before saving.", "is-error");
-    return;
-  }
-
-  if (!token) {
     storeMemberSessionToken("");
     showMembersAuth();
-    setMembersMessage(
-      membersLoginStatus,
-      "Your members session has expired. Please sign in again.",
-      "is-error",
-    );
-    return;
-  }
+    setMembersMessage(membersStatus, "");
+    setMembersMessage(membersLoginStatus, "Signed out.", "is-success");
+  });
 
-  submitButton?.setAttribute("disabled", "true");
-  setMembersMessage(statusNode, "Saving reply.");
+  membersGigs?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-answer]");
 
-  try {
-    const status = await postMembersAction(
-      "member_response",
-      {
-        token,
-        gig_id: gigId,
-        answer,
-        reason,
-      },
-      () => {
-        setMembersMessage(statusNode, "Reply received. Updating the dashboard.");
-      },
-    );
-
-    if (status?.ok) {
-      setMembersMessage(statusNode, "Reply saved.", "is-success");
-      await loadMembersDashboard(token, "Dashboard refreshed.");
+    if (!button) {
       return;
     }
 
-    if (status?.error === "invalid_session") {
+    const form = button.closest("[data-members-response-form]");
+    const answer = button.getAttribute("data-answer") || "";
+    updateMembersAnswerState(form, answer);
+  });
+
+  membersGigs?.addEventListener("submit", async (event) => {
+    const form = event.target.closest("[data-members-response-form]");
+
+    if (!form) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const token = getStoredMemberSessionToken();
+    const gigId = form.getAttribute("data-gig-id") || "";
+    const answer = form.querySelector('input[name="answer"]')?.value || "";
+    const reason = form.querySelector('textarea[name="reason"]')?.value.trim() || "";
+    const submitButton = form.querySelector('button[type="submit"]');
+    const statusNode = form.querySelector("[data-members-response-status]");
+
+    if (!answer) {
+      setMembersMessage(statusNode, "Pick yes, no, or maybe before saving.", "is-error");
+      return;
+    }
+
+    if (!token) {
       storeMemberSessionToken("");
       showMembersAuth();
       setMembersMessage(
@@ -1163,13 +1132,48 @@ membersGigs?.addEventListener("submit", async (event) => {
       return;
     }
 
-    setMembersMessage(statusNode, "Reply could not be saved. Please try again.", "is-error");
-  } catch {
-    setMembersMessage(statusNode, "Reply could not be saved. Please try again.", "is-error");
-  } finally {
-    submitButton?.removeAttribute("disabled");
-  }
-});
+    submitButton?.setAttribute("disabled", "true");
+    setMembersMessage(statusNode, "Saving reply.");
+
+    try {
+      const status = await postMembersAction(
+        "member_response",
+        {
+          token,
+          gig_id: gigId,
+          answer,
+          reason,
+        },
+        () => {
+          setMembersMessage(statusNode, "Reply received. Updating the dashboard.");
+        },
+      );
+
+      if (status?.ok) {
+        setMembersMessage(statusNode, "Reply saved.", "is-success");
+        await loadMembersDashboard(token, "Dashboard refreshed.");
+        return;
+      }
+
+      if (status?.error === "invalid_session") {
+        storeMemberSessionToken("");
+        showMembersAuth();
+        setMembersMessage(
+          membersLoginStatus,
+          "Your members session has expired. Please sign in again.",
+          "is-error",
+        );
+        return;
+      }
+
+      setMembersMessage(statusNode, "Reply could not be saved. Please try again.", "is-error");
+    } catch {
+      setMembersMessage(statusNode, "Reply could not be saved. Please try again.", "is-error");
+    } finally {
+      submitButton?.removeAttribute("disabled");
+    }
+  });
+}
 
 const getStatusMessage = (payload) => {
   if (!payload) {
@@ -1302,7 +1306,7 @@ syncHeader();
 syncDrift();
 loadGigsFromCsv();
 
-if (membersPage) {
+if (membersPage && !usesFirebaseMembers) {
   const storedToken = getStoredMemberSessionToken();
 
   if (storedToken) {
