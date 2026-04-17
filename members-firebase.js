@@ -33,11 +33,13 @@ if (!membersPage) {
   const membersLoginForm = document.querySelector("[data-members-login-form]");
   const membersLoginStatus = document.querySelector("[data-members-login-status]");
   const membersLogoutButton = document.querySelector("[data-members-logout]");
+  const membersAdminToggle = document.querySelector("[data-members-admin-toggle]");
   const membersName = document.querySelector("[data-members-name]");
   const membersRole = document.querySelector("[data-members-role]");
   const membersStatus = document.querySelector("[data-members-status]");
   const membersEmpty = document.querySelector("[data-members-empty]");
   const membersGigs = document.querySelector("[data-members-gigs]");
+  const membersDashboardView = document.querySelector("[data-members-dashboard-view]");
   const membersAdmin = document.querySelector("[data-members-admin]");
   const membersAdminForm = document.querySelector("[data-members-admin-form]");
   const membersAdminSubmit = document.querySelector("[data-members-admin-submit]");
@@ -90,17 +92,39 @@ if (!membersPage) {
     membersApp?.removeAttribute("hidden");
   };
 
+  let currentMembersView = "dashboard";
+
+  const setMembersView = (viewName) => {
+    currentMembersView = viewName === "admin" ? "admin" : "dashboard";
+
+    if (membersDashboardView) {
+      membersDashboardView.hidden = currentMembersView !== "dashboard";
+    }
+
+    if (membersAdmin) {
+      membersAdmin.hidden = currentMembersView !== "admin";
+    }
+
+    if (membersAdminToggle) {
+      const isAdminView = currentMembersView === "admin";
+      membersAdminToggle.textContent = isAdminView ? "Back to dashboard" : "Admin tools";
+      membersAdminToggle.setAttribute("aria-pressed", isAdminView ? "true" : "false");
+    }
+  };
+
   const toggleAdmin = (isVisible) => {
-    if (!membersAdmin) {
+    if (!membersAdmin || !membersAdminToggle) {
       return;
     }
 
     if (isVisible) {
-      membersAdmin.removeAttribute("hidden");
+      membersAdminToggle.removeAttribute("hidden");
+      setMembersView(currentMembersView);
       return;
     }
 
-    membersAdmin.setAttribute("hidden", "true");
+    membersAdminToggle.setAttribute("hidden", "true");
+    setMembersView("dashboard");
   };
 
   const escapeHtml = (value = "") =>
@@ -339,6 +363,8 @@ if (!membersPage) {
     const selectedAnswer = response.answer || "";
     const maybeReason = response.reason || "";
     const answeredAt = formatAnsweredAt(response.answered_at);
+    const respondedCount = (gig.stats?.yes || 0) + (gig.stats?.no || 0) + (gig.stats?.maybe || 0);
+    const totalMembers = respondedCount + (gig.stats?.no_reply || 0);
     const statusCopy = response.answer
       ? `Your current reply is ${responseLabels[response.answer] || response.answer}.`
       : "You have not replied yet.";
@@ -382,8 +408,6 @@ if (!membersPage) {
           </div>
         </div>
 
-        ${gig.notes ? `<p class="members-gig__notes">${escapeHtml(gig.notes)}</p>` : ""}
-
         <form class="members-response" data-members-response-form data-gig-id="${escapeHtml(
           gig.id || "",
         )}">
@@ -420,9 +444,18 @@ if (!membersPage) {
           <p class="members-status" data-members-response-status aria-live="polite"></p>
         </form>
 
-        <div class="members-roster">
-          ${renderRosterGroups(gig.roster || [])}
-        </div>
+        <details class="members-gig__details">
+          <summary class="members-gig__details-toggle">
+            <span class="members-gig__details-label">Band replies</span>
+            <span class="members-gig__details-meta">${respondedCount} replied / ${totalMembers} total</span>
+          </summary>
+          <div class="members-gig__details-body">
+            ${gig.notes ? `<p class="members-gig__notes">${escapeHtml(gig.notes)}</p>` : ""}
+            <div class="members-roster">
+              ${renderRosterGroups(gig.roster || [])}
+            </div>
+          </div>
+        </details>
       </article>
     `;
   };
@@ -575,8 +608,21 @@ if (!membersPage) {
     return `No ${label.toLowerCase()} queued yet.`;
   };
 
+  const hasNotificationBeenUsed = (gig) => {
+    const status = String(gig.notificationStatus || "")
+      .trim()
+      .toLowerCase();
+
+    return (
+      Boolean(gig.notificationRequestedAt) ||
+      Boolean(gig.notificationSentAt) ||
+      ["queued", "sending", "sent"].includes(status)
+    );
+  };
+
   const renderAdminGigCard = (gig) => {
     const isArchived = gig.archived === true;
+    const notificationLocked = hasNotificationBeenUsed(gig);
     const summaryBits = [
       formatGigDate(gig.date),
       normaliseTime(gig.time || ""),
@@ -620,9 +666,9 @@ if (!membersPage) {
             type="button"
             data-admin-action="queue-notification"
             data-gig-id="${escapeHtml(gig.id)}"
-            ${isArchived ? "disabled" : ""}
+            ${isArchived || notificationLocked ? "disabled" : ""}
           >
-            Queue notify all
+            ${notificationLocked ? "Notification sent" : "Queue notify all"}
           </button>
           <button
             class="button button--ghost-dark"
@@ -1008,6 +1054,15 @@ if (!membersPage) {
       return;
     }
 
+    if (actionName === "notification" && hasNotificationBeenUsed(gig)) {
+      setMessage(
+        membersAdminStatus,
+        "This gig has already used its one notification send.",
+        "is-error",
+      );
+      return;
+    }
+
     const label = actionName === "notification" ? "Notification" : "Reminder";
     setMessage(membersAdminStatus, `${label} queue is being updated.`);
 
@@ -1114,6 +1169,14 @@ if (!membersPage) {
     resetAdminForm();
   });
 
+  membersAdminToggle?.addEventListener("click", () => {
+    if (!currentMember?.admin) {
+      return;
+    }
+
+    setMembersView(currentMembersView === "admin" ? "dashboard" : "admin");
+  });
+
   membersAdminGigs?.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-admin-action]");
 
@@ -1183,6 +1246,7 @@ if (!membersPage) {
     currentMembers = [];
     currentGigs = [];
     currentResponses = [];
+    setMembersView("dashboard");
     setMessage(membersStatus, "");
     setMessage(membersAdminStatus, "");
     setMessage(membersLoginStatus, "Signed out.", "is-success");
@@ -1221,6 +1285,7 @@ if (!membersPage) {
 
         resetAdminForm();
         toggleAdmin(false);
+        setMembersView("dashboard");
         showAuth();
         return;
       }

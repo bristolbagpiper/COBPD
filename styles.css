@@ -952,6 +952,20 @@ h2 {
   gap: 0.45rem;
 }
 
+.members-app__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.members-app__actions .button[aria-pressed="true"] {
+  background: rgba(23, 127, 156, 0.08);
+  border-color: rgba(23, 127, 156, 0.28);
+  color: var(--teal-deep);
+}
+
 .members-app__meta,
 .members-app__summary,
 .members-status,
@@ -970,6 +984,15 @@ h2 {
   border: 1px dashed rgba(4, 6, 31, 0.14);
   border-radius: 1rem;
   background: rgba(4, 6, 31, 0.02);
+}
+
+.members-view {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.members-view[hidden] {
+  display: none !important;
 }
 
 .members-admin {
@@ -1148,6 +1171,67 @@ h2 {
 .members-gig__notes {
   margin: 0;
   color: var(--ink-soft);
+}
+
+.members-gig__details {
+  display: grid;
+  gap: 0.9rem;
+  padding-top: 0.2rem;
+  border-top: 1px solid rgba(4, 6, 31, 0.08);
+}
+
+.members-gig__details[open] {
+  padding-top: 1rem;
+}
+
+.members-gig__details-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+}
+
+.members-gig__details-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.members-gig__details-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.members-gig__details-label::before {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: rgba(23, 127, 156, 0.08);
+  color: var(--teal-deep);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.members-gig__details[open] .members-gig__details-label::before {
+  content: "–";
+}
+
+.members-gig__details-meta {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.members-gig__details-body {
+  display: grid;
+  gap: 0.95rem;
 }
 
 .members-gig__flag,
@@ -1801,6 +1885,10 @@ body.has-motion .reveal.is-visible {
   .members-gig__top,
   .members-roster-header {
     display: grid;
+  }
+
+  .members-app__actions {
+    justify-content: flex-start;
   }
 
   .schedule-item {
