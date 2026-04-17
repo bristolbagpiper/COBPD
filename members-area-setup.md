@@ -1,5 +1,8 @@
 # Members Area Setup
 
+> Legacy document: this file describes the old Google Apps Script + Sheets members backend.
+> For the current Firebase setup, use [firebase-members-setup.md](/abs/path/c:/Users/aaron/Documents/COBPD/firebase-members-setup.md:1).
+
 The live members system uses the existing Google Apps Script backend and Google Sheets tabs.
 Do not use a public CSV file as the live members database unless you want member emails and passwords exposed.
 

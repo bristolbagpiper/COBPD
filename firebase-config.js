@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME",
+  apiKey: "AIzaSyBXG43rdBKgrUHAMFJQOuZAo7w1LbGaQM4",
+  authDomain: "cobpd-3bf88.firebaseapp.com",
+  projectId: "cobpd-3bf88",
+  storageBucket: "cobpd-3bf88.firebasestorage.app",
+  messagingSenderId: "778991988490",
+  appId: "1:778991988490:web:910da362d4793b8ec494f3"
 };
 
 export const firebaseCollections = {
