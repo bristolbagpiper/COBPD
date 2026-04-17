@@ -755,6 +755,25 @@ if (!membersPage) {
     return "Sign-in failed. Please try again.";
   };
 
+  const getFirebaseErrorMessage = (error, fallbackMessage) => {
+    const code = String(error?.code || "").trim();
+    const message = String(error?.message || "").trim();
+
+    if (code && message) {
+      return `${fallbackMessage} (${code}: ${message})`;
+    }
+
+    if (code) {
+      return `${fallbackMessage} (${code})`;
+    }
+
+    if (message) {
+      return `${fallbackMessage} (${message})`;
+    }
+
+    return fallbackMessage;
+  };
+
   let auth = null;
   let db = null;
   let currentMember = null;
@@ -834,10 +853,14 @@ if (!membersPage) {
         mapDashboardGigs(memberData, currentMembers, currentGigs, currentResponses),
         currentGigs,
       );
-    } catch {
+    } catch (error) {
+      console.error("Firebase dashboard load failed", error);
       setMessage(
         membersLoginStatus,
-        "We could not load the members dashboard from Firebase. Check the config and Firestore rules.",
+        getFirebaseErrorMessage(
+          error,
+          "We could not load the members dashboard from Firebase. Check the config and Firestore rules.",
+        ),
         "is-error",
       );
       showAuth();
